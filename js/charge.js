@@ -19,9 +19,11 @@ function updateTSSAuto() {
         h = parseFloat(document.getElementById("charge-duree-h").value) || 0,
         m = parseFloat(document.getElementById("charge-duree-min").value) || 0;
     if (type === "custom") return;
-    const dureeH = h + m / 60,
-        base = TSS_AUTO[type] || 0;
-    document.getElementById("charge-tss").value = Math.round(base * dureeH);
+    const base = TSS_AUTO[type] || 0;
+    const dureeH = h + m / 60;
+    // Si durée non renseignée : afficher le TSS de référence (base = pour 1h)
+    // Si durée renseignée : scaler proportionnellement
+    document.getElementById("charge-tss").value = Math.round(dureeH > 0 ? base * dureeH : base);
 }
 
 function ajouterSeance() {
