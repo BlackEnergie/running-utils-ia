@@ -49,13 +49,14 @@
         <select id="mobile-tab-select" onchange="switchMobileTab(this.value)">
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
-            <option value="tab-calculateur">📊 Tableau d'allures</option>
+            <option value="tab-tableau-allures">📊 Tableau d'allures</option>
             <option value="tab-prediction">📈 Prédiction</option>
             <option value="tab-vma">💓 VMA &amp; VO2max</option>
             <option value="tab-fc">❤️ Zones FC</option>
             <option value="tab-charge">🔋 Charge</option>
             <option value="tab-hydratation">💧 Hydratation</option>
             <option value="tab-nutrition">🍳 Nutrition</option>
+            <option value="tab-plan-course">📋 Plan de course</option>
         </select>
     </div>
 
@@ -69,7 +70,7 @@
             <a class="sidebar-link" href="#tab-temps-course">
                 <i class="bi bi-trophy"></i>Temps de course
             </a>
-            <a class="sidebar-link" href="#tab-calculateur">
+            <a class="sidebar-link" href="#tab-tableau-allures">
                 <i class="bi bi-table"></i>Tableau d'allures
             </a>
             <a class="sidebar-link" href="#tab-prediction">
@@ -91,6 +92,9 @@
             </a>
             <a class="sidebar-link" href="#tab-nutrition">
                 <i class="bi bi-egg-fried"></i>Nutrition
+            </a>
+            <a class="sidebar-link" href="#tab-plan-course">
+                <i class="bi bi-journal-check"></i>Plan de course
             </a>
         </nav>
 
@@ -353,7 +357,7 @@
         </div>
 
         <!-- ===== ONGLET 3 : CALCULATEUR ===== -->
-        <div class="tab-pane fade" id="tab-calculateur">
+        <div class="tab-pane fade" id="tab-tableau-allures">
             <div class="card">
                 <div
                         class="card-header"
@@ -1214,23 +1218,23 @@
                             </div>
                             <label class="form-label fw-semibold">Température ambiante</label>
                             <select class="form-select mb-3" id="hydra-temperature">
-                                <option value="frais">Frais (< 10°C)</option>
-                                <option selected value="tempere">Tempéré (10–20°C)</option>
-                                <option value="chaud">Chaud (20–28°C)</option>
-                                <option value="tres-chaud">Très chaud (> 28°C)</option>
+                                <option value="frais">🌥 Frais (&lt; 10°C)</option>
+                                <option selected value="tempere">🌤 Tempéré (10–20°C)</option>
+                                <option value="chaud">☀️ Chaud (20–28°C)</option>
+                                <option value="tres-chaud">🔥 Très chaud (&gt; 28°C)</option>
                             </select>
                             <label class="form-label fw-semibold">Humidité</label>
                             <select class="form-select mb-3" id="hydra-humidite">
-                                <option value="faible">Faible (< 40%)</option>
-                                <option selected value="moderee">Modérée (40–70%)</option>
-                                <option value="elevee">Élevée (> 70%)</option>
+                                <option value="faible">💨 Humidité faible (&lt; 40%)</option>
+                                <option selected value="moderee">🌫 Humidité modérée (40–70%)</option>
+                                <option value="elevee">💧 Humidité élevée (&gt; 70%)</option>
                             </select>
                             <label class="form-label fw-semibold">Transpiration</label>
                             <select class="form-select mb-3" id="hydra-transpiration">
-                                <option value="faible">Faible (< 0,5 L/h)</option>
-                                <option selected value="normale">Normale (0,5–1,0 L/h)</option>
-                                <option value="elevee">Élevée (1,0–1,5 L/h)</option>
-                                <option value="tres-elevee">Très élevée (> 1,5 L/h)</option>
+                                <option value="faible">🧊 Transpiration faible (&lt; 0,5 L/h)</option>
+                                <option selected value="normale">😊 Transpiration normale (0,5–1,0 L/h)</option>
+                                <option value="elevee">💦 Transpiration élevée (1,0–1,5 L/h)</option>
+                                <option value="tres-elevee">🌊 Transpiration très élevée (&gt; 1,5 L/h)</option>
                             </select>
                             <button class="btn btn-convert w-100" onclick="calculerHydratation()">
                                 <i class="bi bi-droplet me-2"></i>Calculer mes besoins
@@ -1289,6 +1293,7 @@
                             </div>
                             <label class="form-label fw-semibold">Poids corporel</label>
                             <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
                                 <input
                                         class="form-control"
                                         id="nutri-poids"
@@ -1331,6 +1336,7 @@
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-clock"></i></span>
                                         <input
                                                 class="form-control"
                                                 id="nutri-min"
@@ -1355,15 +1361,15 @@
                             </div>
                             <label class="form-label fw-semibold">Intensité de l'effort</label>
                             <select class="form-select mb-3" id="nutri-intensite">
-                                <option value="faible">Faible (< 60% FCmax)</option>
-                                <option selected value="modere">Modérée (60–75% FCmax)</option>
-                                <option value="eleve">Élevée (75–90% FCmax)</option>
-                                <option value="max">Maximale (> 90% FCmax)</option>
+                                <option value="faible">🧊 Faible (&lt; 60% FCmax)</option>
+                                <option selected value="modere">😊 Modérée (60–75% FCmax)</option>
+                                <option value="eleve">💪 Élevée (75–90% FCmax)</option>
+                                <option value="max">🔥 Maximale (&gt; 90% FCmax)</option>
                             </select>
                             <label class="form-label fw-semibold">Sexe</label>
                             <select class="form-select mb-3" id="nutri-sexe">
-                                <option selected value="homme">Homme</option>
-                                <option value="femme">Femme</option>
+                                <option selected value="homme">👨 Homme</option>
+                                <option value="femme">👩 Femme</option>
                             </select>
                             <button class="btn btn-convert w-100" onclick="calculerNutrition()">
                                 <i class="bi bi-calculator me-2"></i>Calculer mes besoins
@@ -1476,6 +1482,115 @@
                     </div>
                 </div>
             </div>
+        </div><!-- fin tab-nutrition -->
+        <!-- ===== ONGLET : PLAN DE COURSE ===== -->
+        <div class="tab-pane fade" id="tab-plan-course">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <i class="bi bi-journal-check me-2"></i>Paramètres de la course
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Distance (km)</label>
+                                <div class="input-group mb-1">
+                                    <input type="number" class="form-control" id="plan-distance" min="1" placeholder="Ex: 42.195"/>
+                                    <span class="input-group-text">km</span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1 mt-1">
+                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 5)">5 km</span>
+                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 10)">10 km</span>
+                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 15)">15 km</span>
+                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 21.0975)">Semi</span>
+                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 42.195)">Marathon</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Allure cible (min/km)</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="plan-allure-min" min="0" placeholder="min"/>
+                                            <span class="input-group-text">min</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="plan-allure-sec" min="0" max="59" placeholder="sec"/>
+                                            <span class="input-group-text">sec</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Poids (kg)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="plan-poids" min="30" max="200" placeholder="Ex: 70"/>
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Conditions météo</label>
+                                <select class="form-select mb-2" id="plan-temperature">
+                                    <option value="frais">🌥 Frais (&lt; 10°C)</option>
+                                    <option value="tempere" selected>🌤 Tempéré (10–20°C)</option>
+                                    <option value="chaud">☀️ Chaud (20–28°C)</option>
+                                    <option value="tres-chaud">🔥 Très chaud (&gt; 28°C)</option>
+                                </select>
+                                <select class="form-select mb-2" id="plan-humidite">
+                                    <option value="faible">💨 Humidité faible</option>
+                                    <option value="moderee" selected>🌫 Humidité modérée</option>
+                                    <option value="elevee">💧 Humidité élevée</option>
+                                </select>
+                                <select class="form-select" id="plan-transpiration">
+                                    <option value="faible">🧊 Transpiration faible</option>
+                                    <option value="normale" selected>😊 Transpiration normale</option>
+                                    <option value="elevee">💦 Transpiration élevée</option>
+                                    <option value="tres-elevee">🌊 Transpiration très élevée</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Intervalle hydratation</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="plan-interv-eau" min="5" max="60" value="20"/>
+                                    <span class="input-group-text">min</span>
+                                </div>
+                                <div class="form-text">Fréquence des rappels d'eau</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Points de ravitaillement (km)</label>
+                                <div class="input-group mb-2">
+                                    <input type="number" class="form-control" id="plan-ravi-km" min="0" placeholder="km"/>
+                                    <button class="btn btn-convert btn-sm" onclick="planAddRavitaillement()"><i class="bi bi-plus"></i> Ajouter</button>
+                                </div>
+                                <div id="plan-ravi-list" class="mb-1"><span class="text-muted small">Aucun point ajouté</span></div>
+                                <div class="form-text">Laissez vide pour une répartition automatique.</div>
+                            </div>
+                            <button class="btn btn-convert w-100" onclick="genererPlanCourse()">
+                                <i class="bi bi-journal-check me-2"></i>Générer mon plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div id="plan-placeholder" class="text-center text-muted py-5">
+                        <i class="bi bi-journal-check" style="font-size:3rem;opacity:.2"></i>
+                        <p class="mt-3">Renseignez vos paramètres et cliquez sur <strong>Générer mon plan</strong></p>
+                    </div>
+                    <div id="plan-results" style="display:none">
+                        <div id="plan-resume"></div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="fw-bold mb-0"><i class="bi bi-table me-2"></i>Planning chronologique</h6>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="exportPlanCSV()">
+                                <i class="bi bi-download me-1"></i>Export CSV
+                            </button>
+                        </div>
+                        <div id="plan-table"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div><!-- fin tab-content -->
     </div><!-- fin d-flex -->
 </div><!-- fin container-fluid -->
@@ -1501,6 +1616,7 @@
 <script src="js/charge.js"></script>
 <script src="js/hydratation.js"></script>
 <script src="js/nutrition.js"></script>
+<script src="js/plan-course.js"></script>
 <script src="js/pwa.js"></script>
 </body>
 </html>
