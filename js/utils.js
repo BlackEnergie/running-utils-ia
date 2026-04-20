@@ -46,14 +46,33 @@ function setDistanceField(id, val) {
     document.getElementById(id).value = val;
 }
 
-function switchMobileTab(tabId) {
-    const tabEl = document.querySelector('#mainTabs a[href="#' + tabId + '"]');
-    if (tabEl) bootstrap.Tab.getOrCreateInstance(tabEl).show();
+function showTab(tabId) {
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('show', 'active');
+    });
+    const target = document.getElementById(tabId);
+    if (target) {
+        target.classList.add('show', 'active');
+    }
+    const sidebarLink = document.querySelector('#mainTabs [href="#' + tabId + '"]');
+    document.querySelectorAll('#mainTabs .sidebar-link').forEach(l => l.classList.remove('active'));
+    if (sidebarLink) sidebarLink.classList.add('active');
+    const sel = document.getElementById('mobile-tab-select');
+    if (sel) sel.value = tabId;
 }
 
-// Synchroniser le select mobile quand un onglet desktop est cliqué
-document.addEventListener("shown.bs.tab", (e) => {
-    const sel = document.getElementById("mobile-tab-select");
-    if (sel) sel.value = e.target.getAttribute("href").replace("#", "");
+function switchMobileTab(tabId) {
+    showTab(tabId);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#mainTabs .sidebar-link').forEach(link => {
+        link.removeAttribute('data-bs-toggle');
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('href').replace('#', '');
+            showTab(tabId);
+        });
+    });
 });
 

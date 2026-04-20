@@ -43,59 +43,13 @@
     </div>
 </div>
 
-<div class="container pb-5">
-    <ul class="nav nav-tabs mb-4 flex-wrap" id="mainTabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#tab-allure-vitesse"
-            ><i class="bi bi-arrow-left-right me-1"></i>Allure ↔ Vitesse</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-temps-course"
-            ><i class="bi bi-trophy me-1"></i>Temps de Course</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-calculateur"
-            ><i class="bi bi-calculator me-1"></i>Calculateur</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-prediction"
-            ><i class="bi bi-graph-up-arrow me-1"></i>Prédiction</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-vma"
-            ><i class="bi bi-heart-pulse me-1"></i>VMA & VO2max</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-fc"><i class="bi bi-heart me-1"></i>Zones FC</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-charge"
-            ><i class="bi bi-battery-charging me-1"></i>Charge</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-hydratation"
-            ><i class="bi bi-droplet-half me-1"></i>Hydratation</a
-            >
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#tab-nutrition"
-            ><i class="bi bi-egg-fried me-1"></i>Nutrition</a
-            >
-        </li>
-    </ul>
-
+<div class="container-fluid pb-5">
     <!-- Menu mobile (select) -->
-    <div class="mobile-nav-select mb-3">
+    <div class="mobile-nav-select mb-3 d-md-none px-3">
         <select id="mobile-tab-select" onchange="switchMobileTab(this.value)">
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
-            <option value="tab-temps-course">🏆 Temps de Course</option>
-            <option value="tab-calculateur">🧮 Calculateur</option>
+            <option value="tab-temps-course">🏆 Temps de course</option>
+            <option value="tab-calculateur">📊 Tableau d'allures</option>
             <option value="tab-prediction">📈 Prédiction</option>
             <option value="tab-vma">💓 VMA &amp; VO2max</option>
             <option value="tab-fc">❤️ Zones FC</option>
@@ -105,7 +59,43 @@
         </select>
     </div>
 
-    <div class="tab-content">
+    <div class="d-flex gap-4 px-2 px-md-3">
+        <!-- Sidebar desktop -->
+        <nav class="sidebar-nav d-none d-md-flex flex-column flex-shrink-0" id="mainTabs" style="width:210px">
+            <span class="sidebar-section-label">Calculs</span>
+            <a class="sidebar-link active" href="#tab-allure-vitesse">
+                <i class="bi bi-arrow-left-right"></i>Allure ↔ Vitesse
+            </a>
+            <a class="sidebar-link" href="#tab-temps-course">
+                <i class="bi bi-trophy"></i>Temps de course
+            </a>
+            <a class="sidebar-link" href="#tab-calculateur">
+                <i class="bi bi-table"></i>Tableau d'allures
+            </a>
+            <a class="sidebar-link" href="#tab-prediction">
+                <i class="bi bi-graph-up-arrow"></i>Prédiction
+            </a>
+            <span class="sidebar-section-label mt-3">Physiologie</span>
+            <a class="sidebar-link" href="#tab-vma">
+                <i class="bi bi-heart-pulse"></i>VMA &amp; VO2max
+            </a>
+            <a class="sidebar-link" href="#tab-fc">
+                <i class="bi bi-heart"></i>Zones FC
+            </a>
+            <a class="sidebar-link" href="#tab-charge">
+                <i class="bi bi-battery-charging"></i>Charge
+            </a>
+            <span class="sidebar-section-label mt-3">Course</span>
+            <a class="sidebar-link" href="#tab-hydratation">
+                <i class="bi bi-droplet-half"></i>Hydratation
+            </a>
+            <a class="sidebar-link" href="#tab-nutrition">
+                <i class="bi bi-egg-fried"></i>Nutrition
+            </a>
+        </nav>
+
+        <!-- Contenu des onglets -->
+        <div class="tab-content flex-grow-1 min-w-0">
         <!-- ===== ONGLET 1 : ALLURE ↔ VITESSE ===== -->
         <div class="tab-pane fade show active" id="tab-allure-vitesse">
             <div class="row g-4">
@@ -1486,9 +1476,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </div><!-- fin tab-content -->
+    </div><!-- fin d-flex -->
+</div><!-- fin container-fluid -->
 
 <footer class="py-4 mt-5">
     <div class="container text-center">
