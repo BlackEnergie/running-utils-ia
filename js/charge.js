@@ -59,20 +59,32 @@ function majListeSeances() {
     container.innerHTML = seances
         .slice()
         .reverse()
-        .map((s) => `
+        .map((s, i) => {
+            const realIdx = seances.length - 1 - i;
+            return `
             <div class="plan-day d-flex justify-content-between align-items-center">
                 <div>
                     <div class="small fw-semibold">${formatDate(s.date)}</div>
                     <span class="badge bg-${colors[s.type] || "secondary"} seance-badge">${s.label}</span>
                 </div>
-                <div class="text-end">
-                    <div class="fw-bold text-warning">${s.tss} TSS</div>
-                    <div class="text-muted" style="font-size:.75rem">
-                        ${s.duree > 0 ? `${Math.floor(s.duree / 60)}h${(s.duree % 60).toString().padStart(2, "0")}` : "—"}
+                <div class="d-flex align-items-center gap-2">
+                    <div class="text-end">
+                        <div class="fw-bold text-warning">${s.tss} TSS</div>
+                        <div class="text-muted" style="font-size:.75rem">
+                            ${s.duree > 0 ? `${Math.floor(s.duree / 60)}h${(s.duree % 60).toString().padStart(2, "0")}` : "—"}
+                        </div>
                     </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="supprimerSeance(${realIdx})" title="Supprimer"><i class="bi bi-trash"></i></button>
                 </div>
-            </div>`)
+            </div>`;
+        })
         .join("");
+}
+
+function supprimerSeance(idx) {
+    seances.splice(idx, 1);
+    majListeSeances();
+    calculerCharge();
 }
 
 function effacerSeances() {
