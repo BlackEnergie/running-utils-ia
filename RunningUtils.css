@@ -1,0 +1,406 @@
+:root {
+    --primary: #e8500a;
+    --secondary: #2c3e50;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: linear-gradient(135deg, var(--primary), #c0392b);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+/* ===== HERO ===== */
+.hero {
+    background: linear-gradient(135deg, var(--primary), #c0392b);
+    color: white;
+    padding: 40px 0 60px;
+    clip-path: ellipse(100% 85% at 50% 15%);
+}
+
+/* ===== CARDS ===== */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    border-radius: 16px 16px 0 0 !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* ===== BOUTONS ===== */
+.btn-convert {
+    background: linear-gradient(135deg, var(--primary), #c0392b);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.btn-convert:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* ===== RESULT BOX ===== */
+.result-box {
+    background: linear-gradient(135deg, #f0f4ff, #e8f0fe);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    display: none;
+}
+
+.result-box.show {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.result-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* ===== FORMULAIRES ===== */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1.5px solid #dee2e6;
+    padding: 10px 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(232, 80, 10, 0.15);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-radius: 0 8px 8px 0;
+    border: 1.5px solid #dee2e6;
+    border-left: none;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* ===== BADGE DISTANCE ===== */
+.badge-distance {
+    background-color: #e8f4fd;
+    color: #2980b9;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: 1px solid #bee3f8;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.badge-distance:hover {
+    background-color: #2980b9;
+    color: white;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--secondary);
+    color: #adb5bd;
+}
+
+/* ===== ONGLETS ===== */
+.tab-content {
+    padding-top: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: var(--secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    font-weight: 700;
+}
+
+/* ===== INFO BUBBLE ===== */
+.info-bubble {
+    background-color: #e8f4fd;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: #1a5276;
+    border: 1px solid #bee3f8;
+}
+
+/* ===== MODÈLES DE PRÉDICTION ===== */
+.model-card {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.model-card:hover {
+    border-color: var(--primary);
+    background: #fff8f5;
+}
+
+.model-card.selected {
+    border-color: var(--primary);
+    background: #fff3ee;
+}
+
+.model-card .model-title {
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.model-card .model-desc {
+    font-size: 0.82rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+.accuracy-stars {
+    color: #f39c12;
+    font-size: 0.85rem;
+}
+
+/* ===== SÉANCES VMA ===== */
+.seance-card {
+    border-radius: 14px;
+    border: 2px solid #e9ecef;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+}
+
+.seance-card:hover {
+    border-color: var(--primary);
+    background: #fff8f5;
+}
+
+.seance-card.selected {
+    border-color: var(--primary);
+    background: #fff3ee;
+}
+
+.seance-title {
+    font-weight: 700;
+    color: var(--secondary);
+    font-size: 1rem;
+}
+
+.seance-desc {
+    font-size: 0.82rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+/* ===== VMA ===== */
+.vma-result-big {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.zone-row {
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+
+/* ===== FC ZONES ===== */
+.fc-zone-bar {
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    transition: width 0.5s ease;
+}
+
+/* ===== CHARGE (TSS) ===== */
+.tss-card {
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.tss-value-big {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* ===== PLAN SEMAINE ===== */
+.plan-week {
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.plan-week-header {
+    background: linear-gradient(135deg, var(--primary), #c0392b);
+    color: white;
+    padding: 10px 16px;
+    font-weight: 700;
+}
+
+.plan-day {
+    padding: 10px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.plan-day:last-child {
+    border-bottom: none;
+}
+
+.plan-day-name {
+    font-weight: 600;
+    color: var(--secondary);
+    min-width: 100px;
+}
+
+.seance-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+}
+
+.progress {
+    border-radius: 8px;
+}
+
+/* ===== PWA INSTALL BANNER ===== */
+#pwa-install-banner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: var(--secondary);
+    color: white;
+    padding: 12px 16px;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+}
+
+#pwa-install-banner .pwa-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+#pwa-install-banner .pwa-text {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+#pwa-install-banner .pwa-text strong {
+    display: block;
+}
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+    .nav-tabs {
+        display: none !important;
+    }
+
+    .mobile-nav-select {
+        display: block;
+    }
+
+    .hero {
+        padding: 25px 0 45px;
+    }
+
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .tab-content {
+        padding-top: 12px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-nav-select {
+        display: none;
+    }
+}
+
+.mobile-nav-select select {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--secondary);
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: white;
+    width: 100%;
+    cursor: pointer;
+}
+
+.mobile-nav-select select:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(232, 80, 10, 0.2);
+}
+
