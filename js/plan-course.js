@@ -13,11 +13,13 @@ function planAddRavitaillement() {
     RU.planRavitaillements.sort((a, b) => a - b);
     document.getElementById("plan-ravi-km").value = "";
     planRenderRaviList();
+    sauvegarderRavitaillements();
 }
 
 function planRemoveRavitaillement(km) {
     RU.planRavitaillements = RU.planRavitaillements.filter(k => k !== km);
     planRenderRaviList();
+    sauvegarderRavitaillements();
 }
 
 function planRenderRaviList() {

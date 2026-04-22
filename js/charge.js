@@ -43,6 +43,7 @@ function ajouterSeance() {
     seances.sort((a, b) => new Date(a.date) - new Date(b.date));
     majListeSeances();
     calculerCharge();
+    sauvegarderSeances();
 }
 
 function majListeSeances() {
@@ -86,6 +87,7 @@ function supprimerSeance(idx) {
     RU.seances.splice(idx, 1);
     majListeSeances();
     calculerCharge();
+    sauvegarderSeances();
 }
 
 function effacerSeances() {
@@ -93,6 +95,7 @@ function effacerSeances() {
         RU.seances = [];
         majListeSeances();
         calculerCharge();
+        sauvegarderSeances();
     }
 }
 

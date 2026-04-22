@@ -30,6 +30,16 @@ const RU = {
     nutriQtys:         [],   // nutrition.js — quantités par aliment
 };
 
+// Restauration depuis localStorage (sans bloquer si données corrompues)
+(function () {
+    try {
+        const s = localStorage.getItem('ru_seances');
+        if (s) RU.seances = JSON.parse(s);
+        const p = localStorage.getItem('ru_ravitaillements');
+        if (p) RU.planRavitaillements = JSON.parse(p);
+    } catch (_) {}
+})();
+
 // =====================
 // UTILITAIRES COMMUNS
 // =====================
@@ -124,6 +134,14 @@ function setDistanceField(id, val) {
     document.getElementById(id).value = val;
 }
 
+function sauvegarderSeances() {
+    localStorage.setItem('ru_seances', JSON.stringify(RU.seances));
+}
+
+function sauvegarderRavitaillements() {
+    localStorage.setItem('ru_ravitaillements', JSON.stringify(RU.planRavitaillements));
+}
+
 function showTab(tabId) {
     document.querySelectorAll('.tab-pane').forEach(pane => {
         pane.classList.remove('show', 'active');
@@ -205,5 +223,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('charge-type').addEventListener('change', updateTSSAuto);
     document.getElementById('charge-duree-h').addEventListener('change', updateTSSAuto);
     document.getElementById('charge-duree-min').addEventListener('change', updateTSSAuto);
+
+    // Restauration UI des données persistées
+    majListeSeances();
+    calculerCharge();
+    planRenderRaviList();
 });
 
