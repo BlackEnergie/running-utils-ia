@@ -45,13 +45,16 @@ function genererPlanCourse() {
     const humi      = document.getElementById("plan-humidite").value;
     const transpi   = document.getElementById("plan-transpiration").value;
     const intervEau = parseInt(document.getElementById("plan-interv-eau").value) || 20;
+    const dPlus     = parseFloat(document.getElementById("plan-dplus").value)  || 0;
+    const dMoins    = parseFloat(document.getElementById("plan-dminus").value) || 0;
 
     if (!dist || dist <= 0) return showFieldError('plan-distance', 'Distance invalide.');
     if (minVal === 0 && secVal === 0) return showFieldError('plan-allure-min', 'Allure invalide.');
     if (!poids || poids <= 0) return showFieldError('plan-poids', 'Poids invalide.');
 
     const allureSec = minVal * 60 + secVal;
-    const dureeMin  = (allureSec * dist) / 60;
+    const ke        = calculerKmEfforts(dist, dPlus, dMoins);
+    const dureeMin  = (allureSec * ke) / 60;
     const dureeH    = dureeMin / 60;
 
     // -------- HYDRATATION --------

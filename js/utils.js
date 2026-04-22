@@ -44,6 +44,15 @@ const RU = {
 // UTILITAIRES COMMUNS
 // =====================
 
+/**
+ * Kilomètres Effort (standard Trail/ITRA)
+ * 1 m D+ = 10 m plat · 1 m D- = 5 m plat
+ * KE = distKm + dPlusM/100 + dMoinsM/200
+ */
+function calculerKmEfforts(distKm, dPlusM, dMoinsM) {
+    return distKm + (dPlusM || 0) / 100 + (dMoinsM || 0) / 200;
+}
+
 function formatAllure(s) {
     const m = Math.floor(s / 60),
         sec = Math.round(s % 60);
@@ -263,6 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-vitesse-allure').addEventListener('click', vitesseToAllure);
     document.getElementById('btn-calculer-temps').addEventListener('click', calculerTemps);
     document.getElementById('btn-calculer-allure').addEventListener('click', calculerAllure);
+    document.getElementById('btn-calculer-ke').addEventListener('click', calculerKE);
     document.getElementById('btn-generer-tableau').addEventListener('click', genererTableau);
     document.getElementById('btn-calculer-predictions').addEventListener('click', calculerPredictions);
     document.getElementById('btn-estimer-fcmax').addEventListener('click', estimerFCmax);
