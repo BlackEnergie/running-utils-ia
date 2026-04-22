@@ -44,7 +44,8 @@ function calculerZonesFC() {
             bpmMin = Math.round((fcmax * z.pct[0]) / 100);
             bpmMax = Math.round((fcmax * z.pct[1]) / 100);
         }
-        const widthPct = z.pct[1] - z.pct[0];
+        const widthPct  = z.pct[1] - z.pct[0];   // largeur réelle de la zone (ex: 10%)
+        const offsetPct = z.pct[0];                // position de départ (ex: 50%)
 
         barsHtml += `<div class="mb-3">
             <div class="d-flex justify-content-between mb-1">
@@ -52,7 +53,7 @@ function calculerZonesFC() {
                 <span class="fw-bold small">${bpmMin}–${bpmMax} bpm</span>
             </div>
             <div class="progress" style="height:22px;">
-                <div class="progress-bar" style="width:${widthPct * 2}%;background:${z.couleur};font-size:.8rem;" role="progressbar">
+                <div class="progress-bar" style="width:${widthPct}%;margin-left:${offsetPct}%;background:${z.couleur};font-size:.8rem;" role="progressbar" aria-valuenow="${widthPct}" aria-valuemin="0" aria-valuemax="100">
                     ${z.pct[0]}–${z.pct[1]}%
                 </div>
             </div>
