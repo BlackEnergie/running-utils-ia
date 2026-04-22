@@ -3,14 +3,15 @@
 // =====================
 
 function calculerHydratation() {
+    clearFieldErrors('hydra-poids', 'hydra-distance', 'hydra-min', 'hydra-sec');
     const poids  = parseFloat(document.getElementById("hydra-poids").value);
     const dist   = parseFloat(document.getElementById("hydra-distance").value);
     const m      = parseFloat(document.getElementById("hydra-min").value) || 0;
     const s      = parseFloat(document.getElementById("hydra-sec").value) || 0;
 
-    if (!poids || poids <= 0) return alert("Poids invalide.");
-    if (!dist  || dist  <= 0) return alert("Distance invalide.");
-    if (m === 0 && s === 0)   return alert("Allure invalide.");
+    if (!poids || poids <= 0) return showFieldError('hydra-poids', 'Poids invalide.');
+    if (!dist  || dist  <= 0) return showFieldError('hydra-distance', 'Distance invalide.');
+    if (m === 0 && s === 0)   return showFieldError('hydra-min', 'Allure invalide.');
 
     const allureSec = m * 60 + s;
     const dureeH    = (allureSec * dist) / 3600;

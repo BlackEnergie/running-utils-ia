@@ -20,14 +20,15 @@ RU.nutriQtys = new Array(ALIMENTS.length).fill(0);
 // =====================
 
 function calculerNutrition() {
+    clearFieldErrors('nutri-poids', 'nutri-distance', 'nutri-min', 'nutri-sec');
     const poids = parseFloat(document.getElementById("nutri-poids").value);
     const dist  = parseFloat(document.getElementById("nutri-distance").value);
     const m     = parseFloat(document.getElementById("nutri-min").value) || 0;
     const s     = parseFloat(document.getElementById("nutri-sec").value) || 0;
 
-    if (!poids || poids <= 0) return alert("Poids invalide.");
-    if (!dist  || dist  <= 0) return alert("Distance invalide.");
-    if (m === 0 && s === 0)   return alert("Allure invalide.");
+    if (!poids || poids <= 0) return showFieldError('nutri-poids', 'Poids invalide.');
+    if (!dist  || dist  <= 0) return showFieldError('nutri-distance', 'Distance invalide.');
+    if (m === 0 && s === 0)   return showFieldError('nutri-min', 'Allure invalide.');
 
     const allureSec = m * 60 + s;
     const dureeH    = (allureSec * dist) / 3600;
@@ -170,12 +171,13 @@ function renderNutriConfig() {
 }
 
 function ajouterAlimentCustom() {
+    clearFieldErrors('custom-nom', 'custom-glucides', 'custom-kcal');
     const nom     = document.getElementById("custom-nom").value.trim();
     const glucides = parseFloat(document.getElementById("custom-glucides").value);
     const kcal    = parseFloat(document.getElementById("custom-kcal").value);
-    if (!nom) return alert("Veuillez saisir un nom.");
-    if (isNaN(glucides) || glucides < 0) return alert("Glucides invalides.");
-    if (isNaN(kcal) || kcal < 0) return alert("Calories invalides.");
+    if (!nom) return showFieldError('custom-nom', 'Veuillez saisir un nom.');
+    if (isNaN(glucides) || glucides < 0) return showFieldError('custom-glucides', 'Glucides invalides.');
+    if (isNaN(kcal) || kcal < 0) return showFieldError('custom-kcal', 'Calories invalides.');
     ALIMENTS.push({ nom, glucides, kcal, pratique: "", priorite: 3, custom: true });
     RU.nutriQtys.push(0);
     document.getElementById("custom-nom").value = "";

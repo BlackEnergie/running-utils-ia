@@ -91,42 +91,43 @@ function renderVmaInput() {
 function calculerVMA() {
     let vma = 0, vo2max = 0;
     const selectedSeance = RU.selectedSeance;
+    clearFieldErrors('vma-input-1', 'vma-input-2');
 
     if (selectedSeance === "demi-cooper") {
         const d = parseFloat(document.getElementById("vma-input-1").value);
-        if (!d || d <= 0) return alert("Distance invalide.");
+        if (!d || d <= 0) return showFieldError('vma-input-1', 'Distance invalide.');
         vma = d / 100;
         vo2max = vma * VO2MAX_PAR_KMH;
     } else if (selectedSeance === "cooper") {
         const d = parseFloat(document.getElementById("vma-input-1").value);
-        if (!d || d <= 0) return alert("Distance invalide.");
+        if (!d || d <= 0) return showFieldError('vma-input-1', 'Distance invalide.');
         vo2max = (d - 504.9) / 44.73;
         vma = vo2max / VO2MAX_PAR_KMH;
     } else if (selectedSeance === "vameval") {
         vma = parseFloat(document.getElementById("vma-input-1").value);
-        if (!vma || vma <= 0) return alert("Vitesse invalide.");
+        if (!vma || vma <= 0) return showFieldError('vma-input-1', 'Vitesse invalide.');
         vo2max = vma * VO2MAX_PAR_KMH;
     } else if (selectedSeance === "leger") {
         const v = parseFloat(document.getElementById("vma-input-1").value),
             age = parseFloat(document.getElementById("vma-input-2").value);
-        if (!v || v <= 0) return alert("Vitesse invalide.");
-        if (!age || age <= 0) return alert("Âge invalide.");
+        if (!v || v <= 0) return showFieldError('vma-input-1', 'Vitesse invalide.');
+        if (!age || age <= 0) return showFieldError('vma-input-2', 'Âge invalide.');
         vo2max = 31.025 + 3.238 * v - 3.248 * age + 0.1536 * v * age;
         vma = vo2max / VO2MAX_PAR_KMH;
     } else if (selectedSeance === "3200") {
         const m = parseFloat(document.getElementById("vma-input-1").value) || 0,
             s = parseFloat(document.getElementById("vma-input-2").value) || 0;
-        if (m === 0 && s === 0) return alert("Temps invalide.");
+        if (m === 0 && s === 0) return showFieldError('vma-input-1', 'Temps invalide.');
         vma = (3.2 / ((m * 60 + s) / 3600)) * 0.925;
         vo2max = vma * VO2MAX_PAR_KMH;
     } else if (selectedSeance === "5min") {
         const d = parseFloat(document.getElementById("vma-input-1").value);
-        if (!d || d <= 0) return alert("Distance invalide.");
+        if (!d || d <= 0) return showFieldError('vma-input-1', 'Distance invalide.');
         vma = d / 83.33;
         vo2max = vma * VO2MAX_PAR_KMH;
     }
 
-    if (vma <= 0 || isNaN(vma)) return alert("Calcul impossible.");
+    if (vma <= 0 || isNaN(vma)) return showFieldError('vma-input-1', 'Calcul impossible.');
     RU.vma = vma;
     afficherResultatsVMA(vma, vo2max);
 }

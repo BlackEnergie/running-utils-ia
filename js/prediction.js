@@ -111,13 +111,14 @@ function selectModel(m) {
 }
 
 function calculerPredictions() {
+    clearFieldErrors('pred-dist', 'pred-h', 'pred-min', 'pred-sec');
     const dist1 = parseFloat(document.getElementById("pred-dist").value),
         h = parseFloat(document.getElementById("pred-h").value) || 0,
         m = parseFloat(document.getElementById("pred-min").value) || 0,
         s = parseFloat(document.getElementById("pred-sec").value) || 0;
-    if (!dist1 || dist1 <= 0) return alert("Distance invalide.");
+    if (!dist1 || dist1 <= 0) return showFieldError('pred-dist', 'Distance invalide.');
     const temps1 = h * 3600 + m * 60 + s;
-    if (temps1 <= 0) return alert("Temps invalide.");
+    if (temps1 <= 0) return showFieldError('pred-h', 'Temps invalide.');
 
     const vo2max = vo2maxFromPerf(temps1 / 60, dist1),
         purdyPts = purdyPoints(temps1, dist1) || purdyPoints(temps1, findNearestPurdy(dist1)),

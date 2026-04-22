@@ -82,6 +82,41 @@ function calculerSweatRate(transpi, temp, humi) {
 }
 
 // =====================
+// VALIDATION INLINE
+// =====================
+
+/**
+ * Marque un champ comme invalide et affiche un message Bootstrap.
+ * Crée le div .invalid-feedback s'il n'existe pas encore.
+ */
+function showFieldError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('is-invalid');
+    if (!msg) return;
+    const container = el.closest('.input-group') || el.parentElement;
+    let fb = container.querySelector(':scope > .invalid-feedback');
+    if (!fb) {
+        fb = document.createElement('div');
+        fb.className = 'invalid-feedback';
+        container.appendChild(fb);
+    }
+    fb.textContent = msg;
+}
+
+/** Retire l'état invalide de un ou plusieurs champs. */
+function clearFieldErrors(...ids) {
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('is-invalid');
+        const container = el.closest('.input-group') || el.parentElement;
+        const fb = container.querySelector(':scope > .invalid-feedback');
+        if (fb) fb.textContent = '';
+    });
+}
+
+// =====================
 // HELPERS UI
 // =====================
 

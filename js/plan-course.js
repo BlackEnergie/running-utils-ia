@@ -3,11 +3,12 @@
 // =====================
 
 function planAddRavitaillement() {
+    clearFieldErrors('plan-ravi-km');
     const km = parseFloat(document.getElementById("plan-ravi-km").value);
     const dist = parseFloat(document.getElementById("plan-distance").value);
-    if (isNaN(km) || km <= 0) return alert("Kilomètre invalide.");
-    if (dist && km > dist) return alert("Ce km dépasse la distance de la course.");
-    if (RU.planRavitaillements.includes(km)) return alert("Ce km est déjà ajouté.");
+    if (isNaN(km) || km <= 0) return showFieldError('plan-ravi-km', 'Kilomètre invalide.');
+    if (dist && km > dist) return showFieldError('plan-ravi-km', 'Ce km dépasse la distance de la course.');
+    if (RU.planRavitaillements.includes(km)) return showFieldError('plan-ravi-km', 'Ce km est déjà ajouté.');
     RU.planRavitaillements.push(km);
     RU.planRavitaillements.sort((a, b) => a - b);
     document.getElementById("plan-ravi-km").value = "";
@@ -33,6 +34,7 @@ function planRenderRaviList() {
 }
 
 function genererPlanCourse() {
+    clearFieldErrors('plan-distance', 'plan-allure-min', 'plan-poids');
     const dist      = parseFloat(document.getElementById("plan-distance").value);
     const minVal    = parseFloat(document.getElementById("plan-allure-min").value) || 0;
     const secVal    = parseFloat(document.getElementById("plan-allure-sec").value) || 0;
@@ -42,9 +44,9 @@ function genererPlanCourse() {
     const transpi   = document.getElementById("plan-transpiration").value;
     const intervEau = parseInt(document.getElementById("plan-interv-eau").value) || 20;
 
-    if (!dist || dist <= 0) return alert("Distance invalide.");
-    if (minVal === 0 && secVal === 0) return alert("Allure invalide.");
-    if (!poids || poids <= 0) return alert("Poids invalide.");
+    if (!dist || dist <= 0) return showFieldError('plan-distance', 'Distance invalide.');
+    if (minVal === 0 && secVal === 0) return showFieldError('plan-allure-min', 'Allure invalide.');
+    if (!poids || poids <= 0) return showFieldError('plan-poids', 'Poids invalide.');
 
     const allureSec = minVal * 60 + secVal;
     const dureeMin  = (allureSec * dist) / 60;

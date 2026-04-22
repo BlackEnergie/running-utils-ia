@@ -3,16 +3,18 @@
 // =====================
 
 function allureToVitesse() {
+    clearFieldErrors('allure-min', 'allure-sec');
     const m = parseFloat(document.getElementById("allure-min").value) || 0,
         s = parseFloat(document.getElementById("allure-sec").value) || 0;
-    if (m === 0 && s === 0) return alert("Allure invalide.");
+    if (m === 0 && s === 0) return showFieldError('allure-min', 'Allure invalide.');
     document.getElementById("result-av-value").textContent = (60 / (m + s / 60)).toFixed(2);
     showResult("result-av");
 }
 
 function vitesseToAllure() {
+    clearFieldErrors('vitesse-kmh');
     const v = parseFloat(document.getElementById("vitesse-kmh").value);
-    if (!v || v <= 0) return alert("Vitesse invalide.");
+    if (!v || v <= 0) return showFieldError('vitesse-kmh', 'Vitesse invalide.');
     document.getElementById("result-va-value").textContent = formatAllure(3600 / v);
     showResult("result-va");
 }
@@ -42,6 +44,7 @@ function genererTableauReference() {
 // =====================
 
 function genererTableau() {
+    clearFieldErrors('range-min-m', 'range-max-m');
     const s1 =
             (parseInt(document.getElementById("range-min-m").value) || 3) * 60 +
             (parseInt(document.getElementById("range-min-s").value) || 0),
@@ -50,7 +53,7 @@ function genererTableau() {
             (parseInt(document.getElementById("range-max-s").value) || 0),
         step = parseInt(document.getElementById("range-step").value);
 
-    if (s1 >= s2) return alert("Allure min doit être < allure max.");
+    if (s1 >= s2) return showFieldError('range-min-m', 'Allure min doit être < allure max.');
 
     const D = [
         { label: "1 km", km: 1 },

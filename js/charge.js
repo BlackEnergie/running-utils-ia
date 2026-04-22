@@ -25,13 +25,14 @@ function updateTSSAuto() {
 }
 
 function ajouterSeance() {
+    clearFieldErrors('charge-date', 'charge-tss');
     const date = document.getElementById("charge-date").value,
         type = document.getElementById("charge-type").value,
         h = parseFloat(document.getElementById("charge-duree-h").value) || 0,
         m = parseFloat(document.getElementById("charge-duree-min").value) || 0,
         tss = parseFloat(document.getElementById("charge-tss").value);
-    if (!date) return alert("Veuillez sélectionner une date.");
-    if (!tss || tss <= 0) return alert("TSS invalide.");
+    if (!date) return showFieldError('charge-date', 'Veuillez sélectionner une date.');
+    if (!tss || tss <= 0) return showFieldError('charge-tss', 'TSS invalide.');
 
     const labels = {
         recup: "Récupération", endurance: "Endurance", tempo: "Tempo/Seuil",

@@ -8,18 +8,20 @@ function toggleFCInputs() {
 }
 
 function estimerFCmax() {
+    clearFieldErrors('fc-age');
     const age = parseFloat(document.getElementById("fc-age").value);
-    if (!age || age <= 0) return alert("Âge invalide.");
+    if (!age || age <= 0) return showFieldError('fc-age', 'Âge invalide.');
     document.getElementById("fc-max").value = Math.round(220 - age);
 }
 
 function calculerZonesFC() {
+    clearFieldErrors('fc-max', 'fc-repos');
     const fcmax = parseFloat(document.getElementById("fc-max").value),
         methode = document.getElementById("fc-methode").value;
-    if (!fcmax || fcmax <= 0) return alert("FCmax invalide.");
+    if (!fcmax || fcmax <= 0) return showFieldError('fc-max', 'FCmax invalide.');
 
     const fcrepos = methode === "karvonen" ? parseFloat(document.getElementById("fc-repos").value) || 0 : 0;
-    if (methode === "karvonen" && fcrepos <= 0) return alert("FC de repos invalide.");
+    if (methode === "karvonen" && fcrepos <= 0) return showFieldError('fc-repos', 'FC de repos invalide.');
     const fcReserve = fcmax - fcrepos;
 
     const zones = [
