@@ -2,33 +2,31 @@
 // PLAN DE COURSE
 // =====================
 
-let planRavitaillements = [];
-
 function planAddRavitaillement() {
     const km = parseFloat(document.getElementById("plan-ravi-km").value);
     const dist = parseFloat(document.getElementById("plan-distance").value);
     if (isNaN(km) || km <= 0) return alert("Kilomètre invalide.");
     if (dist && km > dist) return alert("Ce km dépasse la distance de la course.");
-    if (planRavitaillements.includes(km)) return alert("Ce km est déjà ajouté.");
-    planRavitaillements.push(km);
-    planRavitaillements.sort((a, b) => a - b);
+    if (RU.planRavitaillements.includes(km)) return alert("Ce km est déjà ajouté.");
+    RU.planRavitaillements.push(km);
+    RU.planRavitaillements.sort((a, b) => a - b);
     document.getElementById("plan-ravi-km").value = "";
     planRenderRaviList();
 }
 
 function planRemoveRavitaillement(km) {
-    planRavitaillements = planRavitaillements.filter(k => k !== km);
+    RU.planRavitaillements = RU.planRavitaillements.filter(k => k !== km);
     planRenderRaviList();
 }
 
 function planRenderRaviList() {
     const el = document.getElementById("plan-ravi-list");
-    if (planRavitaillements.length === 0) {
+    if (RU.planRavitaillements.length === 0) {
         el.innerHTML = '<span class="text-muted small">Aucun point ajouté</span>';
         return;
     }
-    el.innerHTML = planRavitaillements.map(km =>
-        `<span class="badge bg-secondary me-1 mb-1" style="cursor:pointer" onclick="planRemoveRavitaillement(${km})">
+    el.innerHTML = RU.planRavitaillements.map(km =>
+        `<span class="badge bg-secondary me-1 mb-1" style="cursor:pointer" data-action="remove-ravito" data-km="${km}">
             ${km} km <i class="bi bi-x"></i>
         </span>`
     ).join("");
@@ -95,7 +93,7 @@ function genererPlanCourse() {
 
             // Suggestion d'aliment selon progression et disponibilité ravito
             let aliment = "1 gel énergétique";
-            const ravitoProche = planRavitaillements.some(r => Math.abs(r - km) <= 1.5);
+            const ravitoProche = RU.planRavitaillements.some(r => Math.abs(r - km) <= 1.5);
             if (ravitoProche && ratio < 0.6) {
                 // En début/milieu de course avec ravito : proposer alternative plus solide
                 aliment = ratio < 0.3

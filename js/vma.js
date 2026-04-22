@@ -2,10 +2,8 @@
 // VMA & VO2MAX
 // =====================
 
-let selectedSeance = "demi-cooper";
-
 function selectSeance(s) {
-    selectedSeance = s;
+    RU.selectedSeance = s;
     document.querySelectorAll(".seance-card").forEach((c) => c.classList.remove("selected"));
     document.getElementById("seance-" + s).classList.add("selected");
     renderVmaInput();
@@ -13,6 +11,7 @@ function selectSeance(s) {
 
 function renderVmaInput() {
     const z = document.getElementById("vma-input-zone");
+    const selectedSeance = RU.selectedSeance;
     let html = "";
 
     if (selectedSeance === "demi-cooper") {
@@ -83,7 +82,7 @@ function renderVmaInput() {
             </div>`;
     }
 
-    html += `<button class="btn btn-convert w-100 mt-2" onclick="calculerVMA()">
+    html += `<button class="btn btn-convert w-100 mt-2" data-action="calculer-vma">
         <i class="bi bi-calculator me-2"></i>Calculer ma VMA
     </button>`;
     z.innerHTML = html;
@@ -91,6 +90,7 @@ function renderVmaInput() {
 
 function calculerVMA() {
     let vma = 0, vo2max = 0;
+    const selectedSeance = RU.selectedSeance;
 
     if (selectedSeance === "demi-cooper") {
         const d = parseFloat(document.getElementById("vma-input-1").value);
@@ -127,7 +127,7 @@ function calculerVMA() {
     }
 
     if (vma <= 0 || isNaN(vma)) return alert("Calcul impossible.");
-    window.globalVMA = vma;
+    RU.vma = vma;
     afficherResultatsVMA(vma, vo2max);
 }
 

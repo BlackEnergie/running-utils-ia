@@ -95,10 +95,8 @@ function predictByModel(model, t1, d1, d2, exp, vo2max, purdyPts) {
 // INTERFACE PRÉDICTION
 // =====================
 
-let selectedModel = "riegel";
-
 function selectModel(m) {
-    selectedModel = m;
+    RU.selectedModel = m;
     document.querySelectorAll(".model-card").forEach((c) => c.classList.remove("selected"));
     document.getElementById("model-" + m).classList.add("selected");
     const labels = {
@@ -133,7 +131,7 @@ function calculerPredictions() {
 
     let html = "";
 
-    if (selectedModel === "all") {
+    if (RU.selectedModel === "all") {
         const models = [
             { key: "riegel", label: "Riegel" },
             { key: "riegel_var", label: `Riegel(${riegelExp})` },
@@ -166,7 +164,7 @@ function calculerPredictions() {
             </thead>
             <tbody>`;
         DISTANCES_PRED.forEach((d) => {
-            const t2 = predictByModel(selectedModel, temps1, dist1, d.km, riegelExp, vo2max, purdyPts);
+            const t2 = predictByModel(RU.selectedModel, temps1, dist1, d.km, riegelExp, vo2max, purdyPts);
             if (!t2 || t2 <= 0) {
                 html += `<tr><td>${d.label}</td><td colspan="5" class="text-muted">—</td></tr>`;
                 return;
@@ -208,7 +206,7 @@ function calculerPredictions() {
             vo2max:     `<i class="bi bi-info-circle me-2"></i><strong>Daniels & Gilbert</strong> — Basé sur la VO2max. <a href="https://runsmartproject.com/calculator/" target="_blank">En savoir plus</a>`,
             purdy:      `<i class="bi bi-info-circle me-2"></i><strong>Purdy (1974)</strong> — Basé sur les records du monde. <a href="https://en.wikipedia.org/wiki/Purdy_Points" target="_blank">En savoir plus</a>`,
         };
-        document.getElementById("pred-model-info").innerHTML = infos[selectedModel] || "";
+        document.getElementById("pred-model-info").innerHTML = infos[RU.selectedModel] || "";
     }
 
     document.getElementById("pred-table-container").innerHTML = html;

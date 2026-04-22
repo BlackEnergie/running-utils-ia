@@ -16,6 +16,21 @@ const GEL_GLUCIDES_G       = 22;   // g de glucides par gel
 const CHARGE_GLUCIDIQUE_GKG = 8;   // g de glucides par kg de poids (J-1 + matin)
 
 // =====================
+// NAMESPACE — ÉTAT DE L'APPLICATION
+// =====================
+// Toutes les variables d'état mutable sont regroupées ici
+// pour éviter la pollution du scope global.
+const RU = {
+    seances:           [],    // charge.js — séances d'entraînement
+    planRavitaillements: [], // plan-course.js — points de ravitaillement
+    selectedSeance:    "demi-cooper", // vma.js — séance VMA sélectionnée
+    selectedModel:     "riegel",      // prediction.js — modèle de prédiction
+    vma:               0,    // vma.js — dernière VMA calculée
+    nutriBesoins:      { glucides: 0, kcal: 0, dureeMin: 0 }, // nutrition.js
+    nutriQtys:         [],   // nutrition.js — quantités par aliment
+};
+
+// =====================
 // UTILITAIRES COMMUNS
 // =====================
 
@@ -109,14 +124,26 @@ document.addEventListener('DOMContentLoaded', () => {
         switchMobileTab(this.value);
     });
 
-    // Délégation : badge-distance, model-card, seance-card
+    // Délégation globale (éléments statiques ET dynamiques)
     document.addEventListener('click', function(e) {
+        // Composants statiques
         const badge = e.target.closest('.badge-distance[data-target]');
         if (badge) { setDistanceField(badge.dataset.target, parseFloat(badge.dataset.value)); return; }
         const modelCard = e.target.closest('.model-card[data-model]');
         if (modelCard && !e.target.closest('a, input')) { selectModel(modelCard.dataset.model); return; }
         const seanceCard = e.target.closest('.seance-card[data-seance]');
         if (seanceCard && !e.target.closest('a')) { selectSeance(seanceCard.dataset.seance); return; }
+
+        // Actions dynamiques (templates innerHTML)
+        const action = e.target.closest('[data-action]');
+        if (!action) return;
+        const { action: act, idx, km } = action.dataset;
+        if (act === 'supprimer-seance')  { supprimerSeance(parseInt(idx, 10)); return; }
+        if (act === 'remove-ravito')     { planRemoveRavitaillement(parseFloat(km)); return; }
+        if (act === 'qty-dec')           { changeQty(parseInt(idx, 10), -1); return; }
+        if (act === 'qty-inc')           { changeQty(parseInt(idx, 10),  1); return; }
+        if (act === 'suppr-aliment')     { supprimerAlimentCustom(parseInt(idx, 10)); return; }
+        if (act === 'calculer-vma')      { calculerVMA(); return; }
     });
 
     // Boutons

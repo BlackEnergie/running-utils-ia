@@ -2,8 +2,6 @@
 // CHARGE D'ENTRAÎNEMENT (ATL / CTL / TSB / TSS)
 // =====================
 
-let seances = [];
-
 const TSS_AUTO = {
     recup:     30,
     endurance: 55,
@@ -39,6 +37,7 @@ function ajouterSeance() {
         recup: "Récupération", endurance: "Endurance", tempo: "Tempo/Seuil",
         interval: "Fractionné", course: "Course", longue: "Sortie longue", custom: "Personnalisé",
     };
+    const seances = RU.seances;
     seances.push({ date, type, label: labels[type] || type, duree: h * 60 + m, tss });
     seances.sort((a, b) => new Date(a.date) - new Date(b.date));
     majListeSeances();
@@ -47,6 +46,7 @@ function ajouterSeance() {
 
 function majListeSeances() {
     const container = document.getElementById("seances-list");
+    const seances = RU.seances;
     document.getElementById("nb-seances-badge").textContent = seances.length;
     if (seances.length === 0) {
         container.innerHTML = '<p class="text-center text-muted py-3 small">Aucune séance</p>';
@@ -74,7 +74,7 @@ function majListeSeances() {
                             ${s.duree > 0 ? `${Math.floor(s.duree / 60)}h${(s.duree % 60).toString().padStart(2, "0")}` : "—"}
                         </div>
                     </div>
-                    <button class="btn btn-sm btn-outline-danger" onclick="supprimerSeance(${realIdx})" title="Supprimer"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-sm btn-outline-danger" data-action="supprimer-seance" data-idx="${realIdx}" title="Supprimer"><i class="bi bi-trash"></i></button>
                 </div>
             </div>`;
         })
@@ -82,20 +82,21 @@ function majListeSeances() {
 }
 
 function supprimerSeance(idx) {
-    seances.splice(idx, 1);
+    RU.seances.splice(idx, 1);
     majListeSeances();
     calculerCharge();
 }
 
 function effacerSeances() {
     if (confirm("Effacer toutes les séances ?")) {
-        seances = [];
+        RU.seances = [];
         majListeSeances();
         calculerCharge();
     }
 }
 
 function calculerCharge() {
+    const seances = RU.seances;
     if (seances.length === 0) {
         ["atl-value", "ctl-value", "tsb-value", "tss-semaine-value"].forEach(
             (id) => (document.getElementById(id).textContent = "—"),

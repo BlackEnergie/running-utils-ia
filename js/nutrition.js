@@ -12,8 +12,8 @@ const ALIMENTS = [
     { nom: "Pâtes de fruit (30g)",         glucides: 24, kcal: 96,  pratique: "⭐⭐⭐", priorite: 2 },
 ];
 
-let nutriBesoins = { glucides: 0, kcal: 0, dureeMin: 0 };
-const nutriQtys  = new Array(ALIMENTS.length).fill(0);
+// Initialise les quantités alignées sur la liste des aliments
+RU.nutriQtys = new Array(ALIMENTS.length).fill(0);
 
 // =====================
 // CALCUL DES BESOINS
@@ -46,7 +46,7 @@ function calculerNutrition() {
     const kcalCorr        = Math.round(kcalTotal * corrSexe);
     const glucCorr        = Math.round(glucidesTotaux * corrSexe);
 
-    nutriBesoins = { glucides: glucCorr, kcal: kcalCorr, dureeMin };
+    RU.nutriBesoins = { glucides: glucCorr, kcal: kcalCorr, dureeMin };
 
     const intensiteLabel = { faible: "Faible", modere: "Modérée", eleve: "Élevée", max: "Maximale" }[intensite];
 
@@ -151,15 +151,15 @@ function renderNutriConfig() {
             <td class="text-center">${a.kcal} kcal</td>
             <td class="text-center">
                 <div class="d-flex align-items-center justify-content-center gap-1">
-                    <button class="btn btn-sm btn-outline-secondary px-2 py-0" onclick="changeQty(${i},-1)">−</button>
+                    <button class="btn btn-sm btn-outline-secondary px-2 py-0" data-action="qty-dec" data-idx="${i}">−</button>
                     <span id="qty-${i}" style="min-width:24px;text-align:center;font-weight:700;">0</span>
-                    <button class="btn btn-sm btn-outline-secondary px-2 py-0" onclick="changeQty(${i},1)">+</button>
+                    <button class="btn btn-sm btn-outline-secondary px-2 py-0" data-action="qty-inc" data-idx="${i}">+</button>
                 </div>
             </td>
             <td class="text-center fw-semibold" id="sub-gluc-${i}">0 g</td>
             <td class="text-center fw-semibold" id="sub-kcal-${i}">0 kcal</td>
             <td class="text-center">
-                ${a.custom ? `<button class="btn btn-sm btn-outline-danger px-2 py-0" title="Supprimer" onclick="supprimerAlimentCustom(${i})"><i class="bi bi-trash"></i></button>` : ""}
+                ${a.custom ? `<button class="btn btn-sm btn-outline-danger px-2 py-0" title="Supprimer" data-action="suppr-aliment" data-idx="${i}"><i class="bi bi-trash"></i></button>` : ""}
             </td>
         </tr>`;
     });
@@ -177,7 +177,7 @@ function ajouterAlimentCustom() {
     if (isNaN(glucides) || glucides < 0) return alert("Glucides invalides.");
     if (isNaN(kcal) || kcal < 0) return alert("Calories invalides.");
     ALIMENTS.push({ nom, glucides, kcal, pratique: "", priorite: 3, custom: true });
-    nutriQtys.push(0);
+    RU.nutriQtys.push(0);
     document.getElementById("custom-nom").value = "";
     document.getElementById("custom-glucides").value = "";
     document.getElementById("custom-kcal").value = "";
@@ -189,10 +189,10 @@ function resetNutriConfig() {
     for (let i = ALIMENTS.length - 1; i >= 0; i--) {
         if (ALIMENTS[i].custom) {
             ALIMENTS.splice(i, 1);
-            nutriQtys.splice(i, 1);
+            RU.nutriQtys.splice(i, 1);
         }
     }
-    nutriQtys.fill(0);
+    RU.nutriQtys.fill(0);
     renderNutriConfig();
     document.getElementById("nutri-config-bilan").innerHTML = "";
     document.getElementById("nutri-config-planning").innerHTML = "";
@@ -201,17 +201,17 @@ function resetNutriConfig() {
 function supprimerAlimentCustom(idx) {
     if (!ALIMENTS[idx] || !ALIMENTS[idx].custom) return;
     ALIMENTS.splice(idx, 1);
-    nutriQtys.splice(idx, 1);
+    RU.nutriQtys.splice(idx, 1);
     renderNutriConfig();
     majBilanNutri();
 }
 
 function changeQty(idx, delta) {
-    nutriQtys[idx] = Math.max(0, nutriQtys[idx] + delta);
-    document.getElementById("qty-" + idx).textContent = nutriQtys[idx];
+    RU.nutriQtys[idx] = Math.max(0, RU.nutriQtys[idx] + delta);
+    document.getElementById("qty-" + idx).textContent = RU.nutriQtys[idx];
     const a = ALIMENTS[idx];
-    document.getElementById("sub-gluc-" + idx).textContent = a.glucides * nutriQtys[idx] + " g";
-    document.getElementById("sub-kcal-" + idx).textContent = a.kcal * nutriQtys[idx] + " kcal";
+    document.getElementById("sub-gluc-" + idx).textContent = a.glucides * RU.nutriQtys[idx] + " g";
+    document.getElementById("sub-kcal-" + idx).textContent = a.kcal * RU.nutriQtys[idx] + " kcal";
     majBilanNutri();
 }
 
@@ -220,11 +220,11 @@ function changeQty(idx, delta) {
 // =====================
 
 function majBilanNutri() {
-    const totalGluc  = ALIMENTS.reduce((s, a, i) => s + a.glucides * nutriQtys[i], 0);
-    const totalKcal  = ALIMENTS.reduce((s, a, i) => s + a.kcal    * nutriQtys[i], 0);
-    const besoinGluc = nutriBesoins.glucides;
-    const besoinKcal = nutriBesoins.kcal;
-    const dureeMin   = nutriBesoins.dureeMin;
+    const totalGluc  = ALIMENTS.reduce((s, a, i) => s + a.glucides * RU.nutriQtys[i], 0);
+    const totalKcal  = ALIMENTS.reduce((s, a, i) => s + a.kcal    * RU.nutriQtys[i], 0);
+    const besoinGluc = RU.nutriBesoins.glucides;
+    const besoinKcal = RU.nutriBesoins.kcal;
+    const dureeMin   = RU.nutriBesoins.dureeMin;
 
     const pctGluc = besoinGluc > 0 ? Math.round((totalGluc / besoinGluc) * 100) : 100;
     const pctKcal = besoinKcal > 0 ? Math.round((totalKcal / besoinKcal) * 100) : 100;
@@ -280,7 +280,7 @@ function majBilanNutri() {
     // Planning des prises — trié par priorité digestive
     const prises = [];
     ALIMENTS.forEach((a, i) => {
-        for (let q = 0; q < nutriQtys[i]; q++) prises.push(a);
+        for (let q = 0; q < RU.nutriQtys[i]; q++) prises.push(a);
     });
 
     // Priorité croissante (1=liquide, 4=solide) ; gels en dernier parmi même priorité
