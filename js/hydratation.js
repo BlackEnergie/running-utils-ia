@@ -19,15 +19,12 @@ function calculerHydratation() {
     const transpi   = document.getElementById("hydra-transpiration").value;
 
     // Taux de sueur (L/h)
-    const baseSweat  = { faible: 0.4, normale: 0.8, elevee: 1.2, "tres-elevee": 1.7 }[transpi];
-    const tempFactor = { frais: 0.8, tempere: 1.0, chaud: 1.2, "tres-chaud": 1.5 }[temp];
-    const humiFactor = { faible: 0.9, moderee: 1.0, elevee: 1.15 }[humi];
-    const sweatRate  = baseSweat * tempFactor * humiFactor;
+    const sweatRate = calculerSweatRate(transpi, temp, humi);
 
     const totalSweat  = sweatRate * dureeH * 1000; // mL
-    const totalNeeded = Math.round(totalSweat * 0.75); // compenser 75% des pertes
+    const totalNeeded = Math.round(totalSweat * HYDRA_COMPENSATION);
     const preRace     = 400;
-    const postRace    = Math.round(totalSweat * 1.5); // 150% des pertes
+    const postRace    = Math.round(totalSweat * HYDRA_RECUP_FACTOR);
 
     const minutesCourse = Math.round(dureeH * 60);
     const priseFreq     = Math.round(minutesCourse / Math.max(Math.floor(minutesCourse / 20), 1));

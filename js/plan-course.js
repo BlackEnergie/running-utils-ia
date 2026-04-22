@@ -53,14 +53,11 @@ function genererPlanCourse() {
     const dureeH    = dureeMin / 60;
 
     // -------- HYDRATATION --------
-    const baseSweat  = { faible: 0.4, normale: 0.8, elevee: 1.2, "tres-elevee": 1.7 }[transpi];
-    const tempFactor = { frais: 0.8, tempere: 1.0, chaud: 1.2, "tres-chaud": 1.5 }[temp];
-    const humiFactor = { faible: 0.9, moderee: 1.0, elevee: 1.15 }[humi];
-    const sweatRate  = baseSweat * tempFactor * humiFactor;
+    const sweatRate = calculerSweatRate(transpi, temp, humi);
     const totalSweat = sweatRate * dureeH * 1000;
-    const totalEau   = Math.round(totalSweat * 0.75);
+    const totalEau   = Math.round(totalSweat * HYDRA_COMPENSATION);
     const preRace    = Math.round(Math.min(600, Math.max(300, poids * 5)));
-    const postRace   = Math.round(totalSweat * 1.5);
+    const postRace   = Math.round(totalSweat * HYDRA_RECUP_FACTOR);
     const nbPointsEau = Math.max(1, Math.floor(dureeMin / intervEau));
     const mlParPrise  = Math.round(totalEau / nbPointsEau);
 
@@ -75,8 +72,7 @@ function genererPlanCourse() {
     const intensite = allureSec <= 240 ? "elevee" : allureSec <= 330 ? "moderee" : "faible";
     const glucParH  = { faible: 40, moderee: 55, elevee: 70 }[intensite];
     const totalGluc = Math.round(glucParH * Math.max(0, dureeH - 0.5)); // pas de glucides la 1ère demi-heure
-    const GEL_GLUCIDES = 22;
-    const nbGelsCible = dureeH >= 1 ? Math.ceil(totalGluc / GEL_GLUCIDES) : 0;
+    const nbGelsCible = dureeH >= 1 ? Math.ceil(totalGluc / GEL_GLUCIDES_G) : 0;
 
     // Intervalle optimal entre gels selon intensité (min)
     const gelInterv = intensite === "elevee" ? 20 : intensite === "moderee" ? 25 : 30;
@@ -113,7 +109,7 @@ function genererPlanCourse() {
                 type: "nutri",
                 minuteCourse: Math.round(minuteGel),
                 km,
-                glucides: GEL_GLUCIDES,
+                glucides: GEL_GLUCIDES_G,
                 aliment,
                 numGel: pointsGel.length + 1,
             });

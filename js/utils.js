@@ -1,4 +1,21 @@
 // =====================
+// CONSTANTES PHYSIOLOGIQUES
+// =====================
+
+// Relation VMA ↔ VO2max (Daniels, 1998) : VO2max ≈ VMA × 3.5
+const VO2MAX_PAR_KMH = 3.5;
+
+// Hydratation : compensation des pertes hydriques pendant l'effort
+const HYDRA_COMPENSATION   = 0.75; // boire 75% des pertes en course
+const HYDRA_RECUP_FACTOR   = 1.5;  // boire 150% des pertes en récupération
+
+// Nutrition : glucides par gel énergétique standard
+const GEL_GLUCIDES_G       = 22;   // g de glucides par gel
+
+// Nutrition avant-course : charge glucidique (g/kg de poids corporel)
+const CHARGE_GLUCIDIQUE_GKG = 8;   // g de glucides par kg de poids (J-1 + matin)
+
+// =====================
 // UTILITAIRES COMMUNS
 // =====================
 
@@ -39,6 +56,17 @@ function getWeekStart(date) {
 }
 
 // =====================
+// PHYSIOLOGIE COMMUNE
+// =====================
+
+function calculerSweatRate(transpi, temp, humi) {
+    const baseSweat  = { faible: 0.4, normale: 0.8, elevee: 1.2, "tres-elevee": 1.7 }[transpi];
+    const tempFactor = { frais: 0.8, tempere: 1.0, chaud: 1.2, "tres-chaud": 1.5 }[temp];
+    const humiFactor = { faible: 0.9, moderee: 1.0, elevee: 1.15 }[humi];
+    return baseSweat * tempFactor * humiFactor;
+}
+
+// =====================
 // HELPERS UI
 // =====================
 
@@ -66,6 +94,7 @@ function switchMobileTab(tabId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Sidebar navigation
     document.querySelectorAll('#mainTabs .sidebar-link').forEach(link => {
         link.removeAttribute('data-bs-toggle');
         link.addEventListener('click', function(e) {
@@ -74,5 +103,45 @@ document.addEventListener('DOMContentLoaded', () => {
             showTab(tabId);
         });
     });
+
+    // Mobile tab select
+    document.getElementById('mobile-tab-select').addEventListener('change', function() {
+        switchMobileTab(this.value);
+    });
+
+    // Délégation : badge-distance, model-card, seance-card
+    document.addEventListener('click', function(e) {
+        const badge = e.target.closest('.badge-distance[data-target]');
+        if (badge) { setDistanceField(badge.dataset.target, parseFloat(badge.dataset.value)); return; }
+        const modelCard = e.target.closest('.model-card[data-model]');
+        if (modelCard && !e.target.closest('a, input')) { selectModel(modelCard.dataset.model); return; }
+        const seanceCard = e.target.closest('.seance-card[data-seance]');
+        if (seanceCard && !e.target.closest('a')) { selectSeance(seanceCard.dataset.seance); return; }
+    });
+
+    // Boutons
+    document.getElementById('btn-allure-vitesse').addEventListener('click', allureToVitesse);
+    document.getElementById('btn-vitesse-allure').addEventListener('click', vitesseToAllure);
+    document.getElementById('btn-calculer-temps').addEventListener('click', calculerTemps);
+    document.getElementById('btn-calculer-allure').addEventListener('click', calculerAllure);
+    document.getElementById('btn-generer-tableau').addEventListener('click', genererTableau);
+    document.getElementById('btn-calculer-predictions').addEventListener('click', calculerPredictions);
+    document.getElementById('btn-estimer-fcmax').addEventListener('click', estimerFCmax);
+    document.getElementById('btn-calculer-fc').addEventListener('click', calculerZonesFC);
+    document.getElementById('btn-ajouter-seance').addEventListener('click', ajouterSeance);
+    document.getElementById('btn-effacer-seances').addEventListener('click', effacerSeances);
+    document.getElementById('btn-calculer-hydratation').addEventListener('click', calculerHydratation);
+    document.getElementById('btn-calculer-nutrition').addEventListener('click', calculerNutrition);
+    document.getElementById('btn-reset-nutri').addEventListener('click', resetNutriConfig);
+    document.getElementById('btn-ajouter-aliment').addEventListener('click', ajouterAlimentCustom);
+    document.getElementById('btn-plan-ravi').addEventListener('click', planAddRavitaillement);
+    document.getElementById('btn-generer-plan').addEventListener('click', genererPlanCourse);
+    document.getElementById('btn-export-plan').addEventListener('click', exportPlanCSV);
+
+    // Selects / inputs avec changement d'état
+    document.getElementById('fc-methode').addEventListener('change', toggleFCInputs);
+    document.getElementById('charge-type').addEventListener('change', updateTSSAuto);
+    document.getElementById('charge-duree-h').addEventListener('change', updateTSSAuto);
+    document.getElementById('charge-duree-min').addEventListener('change', updateTSSAuto);
 });
 

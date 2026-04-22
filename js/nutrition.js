@@ -86,7 +86,7 @@ function calculerNutrition() {
             <div class="col-md-4">
                 <div class="p-3 rounded" style="background:#fef9e7;border-left:4px solid #f39c12">
                     <div class="fw-semibold small mb-1">🍞 Avant (J-1 & matin)</div>
-                    <div class="fw-bold">${Math.round(poids * 8)} g glucides</div>
+                    <div class="fw-bold">${Math.round(poids * CHARGE_GLUCIDIQUE_GKG)} g glucides</div>
                     <div class="text-muted" style="font-size:.8rem">Pâtes, riz, pain — charge glucidique</div>
                 </div>
             </div>

@@ -46,7 +46,7 @@
 <div class="container-fluid pb-5">
     <!-- Menu mobile (select) -->
     <div class="mobile-nav-select mb-3 d-md-none px-3">
-        <select id="mobile-tab-select" onchange="switchMobileTab(this.value)">
+        <select id="mobile-tab-select">
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
@@ -138,7 +138,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="allureToVitesse()">
+                            <button class="btn btn-convert w-100" id="btn-allure-vitesse">
                                 <i class="bi bi-arrow-right-circle me-2"></i>Convertir
                             </button>
                             <div class="result-box" id="result-av">
@@ -170,7 +170,7 @@
                                 />
                                 <span class="input-group-text">km/h</span>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="vitesseToAllure()">
+                            <button class="btn btn-convert w-100" id="btn-vitesse-allure">
                                 <i class="bi bi-arrow-right-circle me-2"></i>Convertir
                             </button>
                             <div class="result-box" id="result-va">
@@ -213,18 +213,10 @@
                         <div class="card-body">
                             <label class="form-label fw-semibold">Distance</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge-distance" onclick="setDistanceField('tc-distance', 5)"
-                                        >5 km</span
-                                        >
-                                <span class="badge-distance" onclick="setDistanceField('tc-distance', 10)"
-                                >10 km</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('tc-distance', 21.0975)"
-                                >Semi</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('tc-distance', 42.195)"
-                                >Marathon</span
-                                >
+                                <span class="badge-distance" data-target="tc-distance" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="tc-distance" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="tc-distance" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="tc-distance" data-value="42.195">Marathon</span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -262,7 +254,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="calculerTemps()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-temps">
                                 <i class="bi bi-stopwatch me-2"></i>Calculer
                             </button>
                             <div class="result-box" id="result-tc">
@@ -281,18 +273,10 @@
                         <div class="card-body">
                             <label class="form-label fw-semibold">Distance</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge-distance" onclick="setDistanceField('obj-distance', 5)"
-                                        >5 km</span
-                                        >
-                                <span class="badge-distance" onclick="setDistanceField('obj-distance', 10)"
-                                >10 km</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('obj-distance', 21.0975)"
-                                >Semi</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('obj-distance', 42.195)"
-                                >Marathon</span
-                                >
+                                <span class="badge-distance" data-target="obj-distance" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="obj-distance" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="obj-distance" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="obj-distance" data-value="42.195">Marathon</span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -342,7 +326,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="calculerAllure()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-allure">
                                 <i class="bi bi-arrow-right-circle me-2"></i>Calculer
                             </button>
                             <div class="result-box" id="result-obj">
@@ -424,7 +408,7 @@
                         </select>
                         </div>
                         <div class="col-sm-6 col-md-3 d-flex align-items-end">
-                            <button class="btn btn-convert w-100" onclick="genererTableau()">
+                            <button class="btn btn-convert w-100" id="btn-generer-tableau">
                                 <i class="bi bi-table me-2"></i>Générer
                             </button>
                         </div>
@@ -450,7 +434,7 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card selected" id="model-riegel" onclick="selectModel('riegel')">
+                            <div class="model-card selected" id="model-riegel" data-model="riegel">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📐 Riegel (1977)</div>
                                     <div class="accuracy-stars">⭐⭐⭐</div>
@@ -459,14 +443,13 @@
                                 <a
                                         class="small text-primary"
                                         href="https://en.wikipedia.org/wiki/Peter_Riegel"
-                                        onclick="event.stopPropagation()"
                                         target="_blank"
                                 ><i class="bi bi-box-arrow-up-right me-1"></i>En savoir plus</a
                                 >
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-riegel_var" onclick="selectModel('riegel_var')">
+                            <div class="model-card" id="model-riegel_var" data-model="riegel_var">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📐 Riegel variable</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -477,7 +460,6 @@
                                         id="riegel-exp"
                                         max="1.10"
                                         min="1.04"
-                                        onclick="event.stopPropagation()"
                                         step="0.01"
                                         type="number"
                                         value="1.06"
@@ -485,14 +467,13 @@
                             ><a
                                     class="small text-primary d-block mt-1"
                                     href="https://en.wikipedia.org/wiki/Peter_Riegel"
-                                    onclick="event.stopPropagation()"
                                     target="_blank"
                             ><i class="bi bi-box-arrow-up-right me-1"></i>En savoir plus</a
                             >
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-cameron" onclick="selectModel('cameron')">
+                            <div class="model-card" id="model-cameron" data-model="cameron">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">🧮 Cameron</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -503,14 +484,13 @@
                                 <a
                                         class="small text-primary"
                                         href="https://www.cs.uml.edu/~phoffman/xcinfo3.html"
-                                        onclick="event.stopPropagation()"
                                         target="_blank"
                                 ><i class="bi bi-box-arrow-up-right me-1"></i>En savoir plus</a
                                 >
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-vo2max" onclick="selectModel('vo2max')">
+                            <div class="model-card" id="model-vo2max" data-model="vo2max">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">💨 Daniels & Gilbert</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐⭐</div>
@@ -519,14 +499,13 @@
                                 <a
                                         class="small text-primary"
                                         href="https://runsmartproject.com/calculator/"
-                                        onclick="event.stopPropagation()"
                                         target="_blank"
                                 ><i class="bi bi-box-arrow-up-right me-1"></i>En savoir plus</a
                                 >
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-purdy" onclick="selectModel('purdy')">
+                            <div class="model-card" id="model-purdy" data-model="purdy">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📊 Purdy (1974)</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -535,14 +514,13 @@
                                 <a
                                         class="small text-primary"
                                         href="https://en.wikipedia.org/wiki/Purdy_Points"
-                                        onclick="event.stopPropagation()"
                                         target="_blank"
                                 ><i class="bi bi-box-arrow-up-right me-1"></i>En savoir plus</a
                                 >
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-all" onclick="selectModel('all')">
+                            <div class="model-card" id="model-all" data-model="all">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">🔀 Comparer tous</div>
                                     <div class="accuracy-stars">📊</div>
@@ -569,21 +547,11 @@
                             </div>
                             <label class="form-label fw-semibold">Distance de référence</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge-distance" onclick="setDistanceField('pred-dist', 1)"
-                                        >1 km</span
-                                        >
-                                <span class="badge-distance" onclick="setDistanceField('pred-dist', 5)"
-                                >5 km</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('pred-dist', 10)"
-                                >10 km</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('pred-dist', 21.0975)"
-                                >Semi</span
-                                >
-                                <span class="badge-distance" onclick="setDistanceField('pred-dist', 42.195)"
-                                >Marathon</span
-                                >
+                                <span class="badge-distance" data-target="pred-dist" data-value="1">1 km</span>
+                                <span class="badge-distance" data-target="pred-dist" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="pred-dist" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="pred-dist" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="pred-dist" data-value="42.195">Marathon</span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -633,7 +601,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="calculerPredictions()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-predictions">
                                 <i class="bi bi-graph-up-arrow me-2"></i>Prédire
                             </button>
                             <div class="result-box" id="pred-ref-box">
@@ -691,7 +659,7 @@
                             <div
                                     class="seance-card selected mb-3"
                                     id="seance-demi-cooper"
-                                    onclick="selectSeance('demi-cooper')"
+                                    data-seance="demi-cooper"
                             >
                                 <div class="d-flex justify-content-between">
                                     <div class="seance-title">🏃 Demi-Cooper (6 min)</div>
@@ -707,7 +675,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-cooper" onclick="selectSeance('cooper')">
+                            <div class="seance-card mb-3" id="seance-cooper" data-seance="cooper">
                                 <div class="seance-title">🏃 Cooper (12 min)</div>
                                 <div class="seance-desc">Courez le plus loin possible en 12 minutes.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
@@ -719,7 +687,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-vameval" onclick="selectSeance('vameval')">
+                            <div class="seance-card mb-3" id="seance-vameval" data-seance="vameval">
                                 <div class="seance-title">📻 Vameval</div>
                                 <div class="seance-desc">
                                     Test progressif avec bips sonores, +0,5 km/h par minute.
@@ -734,7 +702,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-leger" onclick="selectSeance('leger')">
+                            <div class="seance-card mb-3" id="seance-leger" data-seance="leger">
                                 <div class="seance-title">🔔 Léger-Boucher (navette)</div>
                                 <div class="seance-desc">Test navette progressif sur 20m avec bips.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
@@ -746,14 +714,14 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-3200" onclick="selectSeance('3200')">
+                            <div class="seance-card mb-3" id="seance-3200" data-seance="3200">
                                 <div class="seance-title">🏟️ Test 3200m</div>
                                 <div class="seance-desc">Courez 3200m le plus vite possible.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
                                     <strong>Formule :</strong> VMA = 3,2 / (temps en h) × 0,925
                                 </div>
                             </div>
-                            <div class="seance-card" id="seance-5min" onclick="selectSeance('5min')">
+                            <div class="seance-card" id="seance-5min" data-seance="5min">
                                 <div class="seance-title">⏱️ Test 5 minutes</div>
                                 <div class="seance-desc">Courez le plus loin possible en 5 minutes.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
@@ -862,7 +830,7 @@
                                 • <strong>Karvonen</strong> : zones en % de la FC de réserve (plus précis)
                             </div>
                             <label class="form-label fw-semibold">Méthode de calcul</label>
-                            <select class="form-select mb-3" id="fc-methode" onchange="toggleFCInputs()">
+                            <select class="form-select mb-3" id="fc-methode">
                                 <option value="fcmax">% FCmax uniquement</option>
                                 <option value="karvonen">Méthode de Karvonen (FC réserve)</option>
                             </select>
@@ -892,7 +860,7 @@
                                             style="max-width: 80px"
                                             type="number"
                                     />
-                                    <button class="btn btn-sm btn-outline-secondary" onclick="estimerFCmax()">
+                                    <button class="btn btn-sm btn-outline-secondary" id="btn-estimer-fcmax">
                                         Estimer FCmax
                                     </button>
                                 </div>
@@ -915,7 +883,7 @@
                                     réveil, allongé, avant de vous lever.
                                 </div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="calculerZonesFC()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-fc">
                                 <i class="bi bi-heart me-2"></i>Calculer mes zones FC
                             </button>
                         </div>
@@ -997,7 +965,7 @@
                             <label class="form-label fw-semibold">Date de la séance</label>
                             <input class="form-control mb-3" id="charge-date" type="date"/>
                             <label class="form-label fw-semibold">Type de séance</label>
-                            <select class="form-select mb-3" id="charge-type" onchange="updateTSSAuto()">
+                            <select class="form-select mb-3" id="charge-type">
                                 <option value="custom">Personnalisé (TSS manuel)</option>
                                 <option value="recup">Récupération / Footing lent</option>
                                 <option value="endurance">Endurance fondamentale</option>
@@ -1016,7 +984,6 @@
                                                 min="0"
                                                 placeholder="h"
                                                 type="number"
-                                                onchange="updateTSSAuto()"
                                         /><span class="input-group-text">h</span>
                                     </div>
                                 </div>
@@ -1029,7 +996,6 @@
                                                 min="0"
                                                 placeholder="min"
                                                 type="number"
-                                                onchange="updateTSSAuto()"
                                         /><span class="input-group-text">min</span>
                                     </div>
                                 </div>
@@ -1052,7 +1018,7 @@
                                 <strong>Référence TSS :</strong><br/>
                                 Récup : ~30 · Endurance : ~50 · Tempo : ~80 · Fractionné : ~100 · Course : ~150+
                             </div>
-                            <button class="btn btn-convert w-100" onclick="ajouterSeance()">
+                            <button class="btn btn-convert w-100" id="btn-ajouter-seance">
                                 <i class="bi bi-plus-circle me-2"></i>Ajouter la séance
                             </button>
                         </div>
@@ -1067,7 +1033,7 @@
                                 <p class="text-center text-muted py-3 small">Aucune séance enregistrée</p>
                             </div>
                             <div class="p-2 border-top">
-                                <button class="btn btn-sm btn-outline-danger w-100" onclick="effacerSeances()">
+                                <button class="btn btn-sm btn-outline-danger w-100" id="btn-effacer-seances">
                                     <i class="bi bi-trash me-1"></i>Effacer tout
                                 </button>
                             </div>
@@ -1163,22 +1129,10 @@
                             </div>
                             <label class="form-label fw-semibold">Distance de course</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge-distance" onclick="setDistanceField('hydra-distance', 5)"
-                                        >5 km</span
-                                        >
-                                <span class="badge-distance" onclick="setDistanceField('hydra-distance', 10)"
-                                >10 km</span
-                                >
-                                <span
-                                        class="badge-distance"
-                                        onclick="setDistanceField('hydra-distance', 21.0975)"
-                                >Semi</span
-                                >
-                                <span
-                                        class="badge-distance"
-                                        onclick="setDistanceField('hydra-distance', 42.195)"
-                                >Marathon</span
-                                >
+                                <span class="badge-distance" data-target="hydra-distance" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="hydra-distance" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="hydra-distance" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="hydra-distance" data-value="42.195">Marathon</span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1236,7 +1190,7 @@
                                 <option value="elevee">💦 Transpiration élevée (1,0–1,5 L/h)</option>
                                 <option value="tres-elevee">🌊 Transpiration très élevée (&gt; 1,5 L/h)</option>
                             </select>
-                            <button class="btn btn-convert w-100" onclick="calculerHydratation()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-hydratation">
                                 <i class="bi bi-droplet me-2"></i>Calculer mes besoins
                             </button>
                         </div>
@@ -1305,22 +1259,10 @@
                             </div>
                             <label class="form-label fw-semibold">Distance de course</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
-                                        <span class="badge-distance" onclick="setDistanceField('nutri-distance', 5)"
-                                        >5 km</span
-                                        >
-                                <span class="badge-distance" onclick="setDistanceField('nutri-distance', 10)"
-                                >10 km</span
-                                >
-                                <span
-                                        class="badge-distance"
-                                        onclick="setDistanceField('nutri-distance', 21.0975)"
-                                >Semi</span
-                                >
-                                <span
-                                        class="badge-distance"
-                                        onclick="setDistanceField('nutri-distance', 42.195)"
-                                >Marathon</span
-                                >
+                                <span class="badge-distance" data-target="nutri-distance" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="nutri-distance" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="nutri-distance" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="nutri-distance" data-value="42.195">Marathon</span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1371,7 +1313,7 @@
                                 <option selected value="homme">👨 Homme</option>
                                 <option value="femme">👩 Femme</option>
                             </select>
-                            <button class="btn btn-convert w-100" onclick="calculerNutrition()">
+                            <button class="btn btn-convert w-100" id="btn-calculer-nutrition">
                                 <i class="bi bi-calculator me-2"></i>Calculer mes besoins
                             </button>
                         </div>
@@ -1409,7 +1351,7 @@
                                 <span><i class="bi bi-sliders me-2"></i>Mon ravitaillement</span>
                                 <button
                                         class="btn btn-sm btn-outline-light ms-auto"
-                                        onclick="resetNutriConfig()"
+                                        id="btn-reset-nutri"
                                 >
                                     <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser
                                 </button>
@@ -1465,7 +1407,7 @@
                                             <div class="col-2 col-sm-2">
                                                 <button
                                                         class="btn btn-convert btn-sm w-100 px-1"
-                                                        onclick="ajouterAlimentCustom()"
+                                                        id="btn-ajouter-aliment"
                                                         title="Ajouter"
                                                 >
                                                     <i class="bi bi-plus"></i>
@@ -1499,11 +1441,11 @@
                                     <span class="input-group-text">km</span>
                                 </div>
                                 <div class="d-flex flex-wrap gap-1 mt-1">
-                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 5)">5 km</span>
-                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 10)">10 km</span>
-                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 15)">15 km</span>
-                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 21.0975)">Semi</span>
-                                    <span class="badge-distance" onclick="setDistanceField('plan-distance', 42.195)">Marathon</span>
+                                    <span class="badge-distance" data-target="plan-distance" data-value="5">5 km</span>
+                                    <span class="badge-distance" data-target="plan-distance" data-value="10">10 km</span>
+                                    <span class="badge-distance" data-target="plan-distance" data-value="15">15 km</span>
+                                    <span class="badge-distance" data-target="plan-distance" data-value="21.0975">Semi</span>
+                                    <span class="badge-distance" data-target="plan-distance" data-value="42.195">Marathon</span>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -1562,12 +1504,12 @@
                                 <label class="form-label fw-semibold">Points de ravitaillement (km)</label>
                                 <div class="input-group mb-2">
                                     <input type="number" class="form-control" id="plan-ravi-km" min="0" placeholder="km"/>
-                                    <button class="btn btn-convert btn-sm" onclick="planAddRavitaillement()"><i class="bi bi-plus"></i> Ajouter</button>
+                                    <button class="btn btn-convert btn-sm" id="btn-plan-ravi"><i class="bi bi-plus"></i> Ajouter</button>
                                 </div>
                                 <div id="plan-ravi-list" class="mb-1"><span class="text-muted small">Aucun point ajouté</span></div>
                                 <div class="form-text">Laissez vide pour une répartition automatique.</div>
                             </div>
-                            <button class="btn btn-convert w-100" onclick="genererPlanCourse()">
+                            <button class="btn btn-convert w-100" id="btn-generer-plan">
                                 <i class="bi bi-journal-check me-2"></i>Générer mon plan
                             </button>
                         </div>
@@ -1582,7 +1524,7 @@
                         <div id="plan-resume"></div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <h6 class="fw-bold mb-0"><i class="bi bi-table me-2"></i>Planning chronologique</h6>
-                            <button class="btn btn-outline-secondary btn-sm" onclick="exportPlanCSV()">
+                            <button class="btn btn-outline-secondary btn-sm" id="btn-export-plan">
                                 <i class="bi bi-download me-1"></i>Export CSV
                             </button>
                         </div>
