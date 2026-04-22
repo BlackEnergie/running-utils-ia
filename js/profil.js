@@ -44,8 +44,7 @@ function reinitialiserProfil() {
     });
     document.getElementById('profil-sexe').value = 'homme';
     document.getElementById('profil-transpiration').value = 'normale';
-    document.getElementById('profil-avatar').textContent = '🏃';
-    document.getElementById('profil-nom-affichage').textContent = 'Mon profil';
+    _majWidgetProfil({}, '🏃', 'Mon profil');
 }
 
 /**
@@ -80,10 +79,32 @@ function appliquerProfil(profil) {
     remplirSelect('plan-transpiration',  profil.transpiration);
 
     // Badge avatar dans la sidebar
-    const avatar = document.getElementById('profil-avatar');
-    const nomAff = document.getElementById('profil-nom-affichage');
-    if (avatar) avatar.textContent = profil.sexe === 'femme' ? '🏃‍♀️' : '🏃';
-    if (nomAff) nomAff.textContent = profil.prenom || 'Mon profil';
+    const avatar = profil.sexe === 'femme' ? '🏃‍♀️' : '🏃';
+    const nomAff = profil.prenom || 'Mon profil';
+    _majWidgetProfil(profil, avatar, nomAff);
+}
+
+/** Met à jour le widget profil dans la navbar. */
+function _majWidgetProfil(profil, avatar, nom) {
+    const estRenseigne = profil.poids || profil.age || profil.prenom;
+
+    // --- Pill navbar (toutes tailles d'écran) ---
+    const mobileWidget = document.getElementById('mobile-profil-widget');
+    if (mobileWidget) {
+        if (estRenseigne) {
+            mobileWidget.innerHTML = `
+                <a class="mobile-profil-pill" href="#tab-profil">
+                    <span class="mp-avatar">${avatar}</span>
+                    <span>${nom}</span>
+                </a>`;
+        } else {
+            mobileWidget.innerHTML = `
+                <a class="mobile-profil-pill" href="#tab-profil">
+                    <span class="mp-avatar">👤</span>
+                    <span>Mon profil</span>
+                </a>`;
+        }
+    }
 }
 
 /** Remplit le formulaire profil depuis le localStorage. */

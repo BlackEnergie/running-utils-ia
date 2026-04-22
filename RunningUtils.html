@@ -18,36 +18,16 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="#"><i class="bi bi-lightning-charge-fill me-2"></i>RunningUtils</a>
-        <span class="text-white opacity-75 small d-none d-md-block"
-        ><i class="bi bi-stopwatch me-1"></i>Temps · Allure · VMA · FC · Hydratation · Nutrition</span
-        >
+        <div id="mobile-profil-widget" class="ms-auto">
+            <!-- rempli par profil.js -->
+        </div>
     </div>
 </nav>
-
-<!-- Bannière installation PWA -->
-<div id="pwa-install-banner">
-    <div class="pwa-icon">🏃</div>
-    <div class="pwa-text">
-        <strong>Installer RunningUtils</strong>Accédez à l'app depuis votre écran d'accueil, même hors ligne.
-    </div>
-    <button class="btn btn-convert btn-sm" id="pwa-install-btn">Installer</button>
-    <button class="btn btn-sm btn-outline-light ms-1" id="pwa-install-close"><i class="bi bi-x"></i></button>
-</div>
-
-<div class="hero text-center mb-5">
-    <div class="container">
-        <h1 class="display-5 fw-bold mb-2">🏃 RunningUtils</h1>
-        <p class="lead opacity-90">
-            Temps · Allure · Vitesse · Prédiction · VMA · FC · Charge · Hydratation · Nutrition
-        </p>
-    </div>
-</div>
 
 <div class="container-fluid pb-5">
     <!-- Menu mobile (select) -->
     <div class="mobile-nav-select mb-3 d-md-none px-3">
         <select id="mobile-tab-select">
-            <option value="tab-profil">👤 Mon profil</option>
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
@@ -58,6 +38,7 @@
             <option value="tab-hydratation">💧 Hydratation</option>
             <option value="tab-nutrition">🍳 Nutrition</option>
             <option value="tab-plan-course">📋 Plan de course</option>
+            <option value="tab-profil">👤 Mon profil</option>
         </select>
     </div>
 
@@ -96,11 +77,6 @@
             </a>
             <a class="sidebar-link" href="#tab-plan-course">
                 <i class="bi bi-journal-check"></i>Plan de course
-            </a>
-            <span class="sidebar-section-label mt-3">Compte</span>
-            <a class="sidebar-link" href="#tab-profil" id="sidebar-profil-link">
-                <i class="bi bi-person-circle"></i><span id="profil-nom-affichage">Mon profil</span>
-                &nbsp;<span id="profil-avatar">🏃</span>
             </a>
         </nav>
 
@@ -1640,7 +1616,7 @@
     </div><!-- fin d-flex -->
 </div><!-- fin container-fluid -->
 
-<footer class="py-4 mt-5">
+<footer class="pt-4 pb-2 mt-5">
     <div class="container text-center">
         <p class="mb-1">
             <i class="bi bi-lightning-charge-fill text-warning me-2"></i

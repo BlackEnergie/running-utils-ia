@@ -211,16 +211,6 @@ function switchMobileTab(tabId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Sidebar navigation
-    document.querySelectorAll('#mainTabs .sidebar-link').forEach(link => {
-        link.removeAttribute('data-bs-toggle');
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const tabId = this.getAttribute('href').replace('#', '');
-            showTab(tabId);
-        });
-    });
-
     // Mobile tab select
     document.getElementById('mobile-tab-select').addEventListener('change', function() {
         switchMobileTab(this.value);
@@ -228,6 +218,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Délégation globale (éléments statiques ET dynamiques)
     document.addEventListener('click', function(e) {
+        // Navigation sidebar (statique + dynamique, ex: sidebar-profil-card)
+        const sidebarLink = e.target.closest('#mainTabs [href^="#tab-"]');
+        if (sidebarLink) {
+            e.preventDefault();
+            const tabId = sidebarLink.getAttribute('href').replace('#', '');
+            showTab(tabId);
+            return;
+        }
+
+        // Navigation hors sidebar (ex: widget profil navbar)
+        const anyTabLink = e.target.closest('[href^="#tab-"]');
+        if (anyTabLink) {
+            e.preventDefault();
+            const tabId = anyTabLink.getAttribute('href').replace('#', '');
+            showTab(tabId);
+            return;
+        }
+
         // Composants statiques
         const badge = e.target.closest('.badge-distance[data-target]');
         if (badge) { setDistanceField(badge.dataset.target, parseFloat(badge.dataset.value)); return; }
