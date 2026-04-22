@@ -47,6 +47,7 @@
     <!-- Menu mobile (select) -->
     <div class="mobile-nav-select mb-3 d-md-none px-3">
         <select id="mobile-tab-select">
+            <option value="tab-profil">👤 Mon profil</option>
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
@@ -64,7 +65,7 @@
         <!-- Sidebar desktop -->
         <nav class="sidebar-nav d-none d-md-flex flex-column flex-shrink-0" id="mainTabs" style="width:210px">
             <span class="sidebar-section-label">Calculs</span>
-            <a class="sidebar-link active" href="#tab-allure-vitesse">
+            <a class="sidebar-link" href="#tab-allure-vitesse">
                 <i class="bi bi-arrow-left-right"></i>Allure ↔ Vitesse
             </a>
             <a class="sidebar-link" href="#tab-temps-course">
@@ -95,6 +96,11 @@
             </a>
             <a class="sidebar-link" href="#tab-plan-course">
                 <i class="bi bi-journal-check"></i>Plan de course
+            </a>
+            <span class="sidebar-section-label mt-3">Compte</span>
+            <a class="sidebar-link" href="#tab-profil" id="sidebar-profil-link">
+                <i class="bi bi-person-circle"></i><span id="profil-nom-affichage">Mon profil</span>
+                &nbsp;<span id="profil-avatar">🏃</span>
             </a>
         </nav>
 
@@ -1541,6 +1547,95 @@
                 </div>
             </div>
         </div>
+        <!-- ===== ONGLET PROFIL ===== -->
+        <div class="tab-pane fade" id="tab-profil">
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-header" style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white">
+                            <i class="bi bi-person-circle me-2"></i>Mon profil coureur
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-4">
+                                Ces informations sont enregistrées localement dans votre navigateur et
+                                préremplissent automatiquement les formulaires de chaque outil.
+                            </p>
+
+                            <h6 class="fw-bold mb-3"><i class="bi bi-person me-2 text-primary"></i>Identité</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">Prénom (optionnel)</label>
+                                    <input type="text" class="form-control" id="profil-prenom" placeholder="Ex : Marie" maxlength="40">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">Sexe</label>
+                                    <select class="form-select" id="profil-sexe">
+                                        <option value="homme">👨 Homme</option>
+                                        <option value="femme">👩 Femme</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">Âge</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="profil-age" min="10" max="90" placeholder="Ex : 35">
+                                        <span class="input-group-text">ans</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">Poids</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="profil-poids" min="30" max="200" placeholder="Ex : 70">
+                                        <span class="input-group-text">kg</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3"><i class="bi bi-heart-pulse me-2 text-danger"></i>Fréquence cardiaque</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">FCmax</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="profil-fcmax" min="100" max="220" placeholder="Ex : 185">
+                                        <span class="input-group-text">bpm</span>
+                                    </div>
+                                    <div class="form-text">Laissez vide pour utiliser la formule 220 − âge</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label fw-semibold">FC de repos</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="profil-fcrepos" min="30" max="100" placeholder="Ex : 55">
+                                        <span class="input-group-text">bpm</span>
+                                    </div>
+                                    <div class="form-text">Mesurée au réveil, alloncé</div>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold mb-3"><i class="bi bi-droplet me-2 text-info"></i>Transpiration habituelle</h6>
+                            <div class="mb-4">
+                                <select class="form-select" id="profil-transpiration">
+                                    <option value="faible">💧 Faible (moins de 0,5 L/h)</option>
+                                    <option value="normale" selected>💦 Normale (0,5–1 L/h)</option>
+                                    <option value="elevee">💦💦 Élevée (1–1,5 L/h)</option>
+                                    <option value="tres-elevee">💦💦💦 Très élevée (&gt; 1,5 L/h)</option>
+                                </select>
+                                <div class="form-text">Utilisé dans les calculs d’hydratation et le plan de course</div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-convert flex-grow-1" id="btn-sauvegarder-profil">
+                                    <i class="bi bi-floppy me-2"></i>Enregistrer
+                                </button>
+                                <button class="btn btn-outline-danger" id="btn-reinit-profil">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== FIN ONGLET PROFIL ===== -->
+
         </div><!-- fin tab-content -->
     </div><!-- fin d-flex -->
 </div><!-- fin container-fluid -->
@@ -1567,6 +1662,7 @@
 <script src="js/hydratation.js"></script>
 <script src="js/nutrition.js"></script>
 <script src="js/plan-course.js"></script>
+<script src="js/profil.js"></script>
 <script src="js/pwa.js"></script>
 </body>
 </html>

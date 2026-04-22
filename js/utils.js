@@ -271,6 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-copy-plan').addEventListener('click', function() { copierTableauTexte('plan-table', this); });
     document.getElementById('btn-print-plan').addEventListener('click', () => imprimerSection('plan-table', 'Plan de course'));
 
+    // Profil coureur
+    document.getElementById('btn-sauvegarder-profil').addEventListener('click', sauvegarderProfil);
+    document.getElementById('btn-reinit-profil').addEventListener('click', reinitialiserProfil);
+
     // Selects / inputs avec changement d'état
     document.getElementById('fc-methode').addEventListener('change', toggleFCInputs);
     document.getElementById('charge-type').addEventListener('change', updateTSSAuto);
@@ -281,5 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
     majListeSeances();
     calculerCharge();
     planRenderRaviList();
+    afficherProfil(); // charge le profil et prérempli tous les formulaires
 });
 
