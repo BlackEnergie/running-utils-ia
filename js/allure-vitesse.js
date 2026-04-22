@@ -79,7 +79,17 @@ function genererTableau() {
         </tr>`;
     }
 
-    html += "</tbody></table>";
+    html += `</tbody></table>
+    <div class="d-flex gap-2 mt-2 justify-content-end">
+        <button class="btn btn-sm btn-outline-secondary"
+            data-action="copier-tableau" data-container="tableau-multi-container">
+            <i class="bi bi-clipboard me-1"></i>Copier
+        </button>
+        <button class="btn btn-sm btn-outline-secondary"
+            data-action="imprimer-section" data-container="tableau-multi-container" data-titre="Tableau d'allures">
+            <i class="bi bi-printer me-1"></i>PDF
+        </button>
+    </div>`;
     document.getElementById("tableau-multi-container").innerHTML = html;
 }
 

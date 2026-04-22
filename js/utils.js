@@ -142,6 +142,55 @@ function sauvegarderRavitaillements() {
     localStorage.setItem('ru_ravitaillements', JSON.stringify(RU.planRavitaillements));
 }
 
+/**
+ * Copie le contenu d'un tableau HTML dans le presse-papiers (format TSV).
+ * Affiche un retour visuel éphémère sur le bouton déclencheur.
+ */
+function copierTableauTexte(containerId, btn) {
+    const table = document.querySelector('#' + containerId + ' table');
+    if (!table) return;
+    const text = Array.from(table.querySelectorAll('tr'))
+        .map(r => Array.from(r.querySelectorAll('th, td')).map(c => c.innerText.trim()).join('\t'))
+        .join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+        if (!btn) return;
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check me-1"></i>Copié\u00a0!';
+        btn.disabled = true;
+        setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 1500);
+    });
+}
+
+/**
+ * Ouvre un onglet dédié contenant uniquement le tableau,
+ * avec un bouton "Imprimer / Enregistrer en PDF".
+ */
+function imprimerSection(containerId, titre) {
+    const table = document.querySelector('#' + containerId + ' table');
+    if (!table) return;
+    const w = window.open('', '_blank', 'width=960,height=700');
+    w.document.write(`<!DOCTYPE html><html lang="fr"><head>
+        <meta charset="utf-8">
+        <title>${titre}</title>
+        <style>
+            body { font-family: sans-serif; padding: 24px; }
+            h2 { margin-bottom: 1rem; }
+            table { border-collapse: collapse; width: 100%; font-size: 13px; }
+            th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: center; }
+            thead { background: #222; color: #fff; }
+            tr:nth-child(even) { background: #f5f5f5; }
+            .print-btn { margin-top: 1rem; padding: 8px 20px; font-size: 14px; cursor: pointer; }
+            @media print { .print-btn { display: none; } }
+        </style>
+    </head><body>
+        <h2>${titre}</h2>
+        ${table.outerHTML}
+        <br>
+        <button class="print-btn" onclick="window.print()">&#128438; Imprimer / Enregistrer en PDF</button>
+    </body></html>`);
+    w.document.close();
+}
+
 function showTab(tabId) {
     document.querySelectorAll('.tab-pane').forEach(pane => {
         pane.classList.remove('show', 'active');
@@ -197,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (act === 'qty-inc')           { changeQty(parseInt(idx, 10),  1); return; }
         if (act === 'suppr-aliment')     { supprimerAlimentCustom(parseInt(idx, 10)); return; }
         if (act === 'calculer-vma')      { calculerVMA(); return; }
+        if (act === 'copier-tableau')    { copierTableauTexte(action.dataset.container, action); return; }
+        if (act === 'imprimer-section')  { imprimerSection(action.dataset.container, action.dataset.titre); return; }
     });
 
     // Boutons
@@ -217,6 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-plan-ravi').addEventListener('click', planAddRavitaillement);
     document.getElementById('btn-generer-plan').addEventListener('click', genererPlanCourse);
     document.getElementById('btn-export-plan').addEventListener('click', exportPlanCSV);
+    document.getElementById('btn-copy-plan').addEventListener('click', function() { copierTableauTexte('plan-table', this); });
+    document.getElementById('btn-print-plan').addEventListener('click', () => imprimerSection('plan-table', 'Plan de course'));
 
     // Selects / inputs avec changement d'état
     document.getElementById('fc-methode').addEventListener('change', toggleFCInputs);
