@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Fond dégradé -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8500a"/>
+      <stop offset="100%" style="stop-color:#c0392b"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.04"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Cercles décoratifs -->
+  <circle cx="980" cy="80" r="200" fill="white" fill-opacity="0.05"/>
+  <circle cx="1100" cy="550" r="150" fill="white" fill-opacity="0.04"/>
+  <circle cx="80" cy="500" r="120" fill="white" fill-opacity="0.04"/>
+
+  <!-- Carte centrale -->
+  <rect x="60" y="60" width="1080" height="510" rx="28" fill="url(#card)" stroke="white" stroke-opacity="0.12" stroke-width="1.5"/>
+
+  <!-- Silhouette coureur (grande, côté droit) -->
+  <g transform="translate(870, 80) scale(5.5)" opacity="0.15">
+    <circle cx="38" cy="12" r="5" fill="white"/>
+    <line x1="38" y1="17" x2="34" y2="30" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="36" y1="22" x2="26" y2="19" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="36" y1="22" x2="44" y2="27" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="34" y1="30" x2="24" y2="42" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="24" y1="42" x2="18" y2="52" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <line x1="34" y1="30" x2="42" y2="40" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="42" y1="40" x2="48" y2="50" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Titre -->
+  <text x="110" y="210" font-family="'Segoe UI', Arial, sans-serif" font-size="86" font-weight="700" fill="white" letter-spacing="-2">RunningUtils</text>
+
+  <!-- Sous-titre -->
+  <text x="114" y="278" font-family="'Segoe UI', Arial, sans-serif" font-size="34" fill="white" fill-opacity="0.85" letter-spacing="0.5">Outils intelligents pour coureurs</text>
+
+  <!-- Séparateur -->
+  <rect x="114" y="308" width="80" height="4" rx="2" fill="white" fill-opacity="0.5"/>
+
+  <!-- Features pills -->
+  <g font-family="'Segoe UI', Arial, sans-serif" font-size="26" fill="white">
+    <!-- Pill 1 -->
+    <rect x="114" y="338" width="248" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="138" y="371">⏱ Temps de course</text>
+
+    <!-- Pill 2 -->
+    <rect x="376" y="338" width="220" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="400" y="371">⛰ Km Effort</text>
+
+    <!-- Pill 3 -->
+    <rect x="610" y="338" width="198" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="634" y="371">📊 GAP / Trail</text>
+
+    <!-- Pill 4 -->
+    <rect x="114" y="402" width="196" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="138" y="435">💧 Hydratation</text>
+
+    <!-- Pill 5 -->
+    <rect x="324" y="402" width="198" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="348" y="435">📋 Plan course</text>
+
+    <!-- Pill 6 -->
+    <rect x="536" y="402" width="216" height="50" rx="25" fill="white" fill-opacity="0.15"/>
+    <text x="560" y="435">📁 Analyse GPX</text>
+  </g>
+
+  <!-- URL -->
+  <text x="114" y="528" font-family="'Segoe UI', Arial, sans-serif" font-size="26" fill="white" fill-opacity="0.55">Gratuit · Hors ligne · Sans inscription</text>
+</svg>
