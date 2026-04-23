@@ -512,11 +512,10 @@ function _dessinerProfil(profil) {
         return pt.matrixTransform(svgEl.getScreenCTM().inverse()).x;
     }
 
-    document.getElementById('gpx-overlay').addEventListener('mousemove', evt => {
-        const x = toSvgX(evt);
+    function _onProfilMove(clientX, clientY) {
+        const x = toSvgX({ clientX, clientY });
         const d = Math.max(0, Math.min(dMax, (x - PX) / (W - PX - 10) * dMax));
 
-        // Point le plus proche dans profil
         let idx = 0, minDiff = Infinity;
         for (let i = 0; i < profil.length; i++) {
             const diff = Math.abs(profil[i].d - d);
@@ -526,7 +525,6 @@ function _dessinerProfil(profil) {
         const px = sx(p.d);
         const py = sy(p.e);
 
-        // Pente locale
         let pente = 0;
         if (idx > 0) {
             const dDist = (p.d - profil[idx - 1].d) * 1000;
@@ -536,30 +534,30 @@ function _dessinerProfil(profil) {
         xline.setAttribute('x1', px); xline.setAttribute('x2', px);
         xdot.setAttribute('cx', px);  xdot.setAttribute('cy', py);
 
-        // Tooltip : éviter de sortir à droite
         const ttW = 140, ttH = 58;
         const ttX = px + 12 + ttW > W - 10 ? px - ttW - 12 : px + 12;
         const ttY = PY + 4;
-
         ttBg.setAttribute('x', ttX);   ttBg.setAttribute('y', ttY);
         ttBg.setAttribute('width', ttW); ttBg.setAttribute('height', ttH);
-
         [[ttDist, 17], [ttAlt, 33], [ttPente, 49]].forEach(([el, dy]) => {
             el.setAttribute('x', ttX + 8);
             el.setAttribute('y', ttY + dy);
         });
-
         const sign = pente >= 0 ? '+' : '';
         ttDist.textContent  = `Distance : ${p.d.toFixed(2)} km`;
         ttAlt.textContent   = `Altitude : ${Math.round(p.e)} m`;
         ttPente.textContent = `Pente : ${sign}${pente.toFixed(1)} %`;
-
         xhair.style.display = '';
-    });
+    }
 
-    document.getElementById('gpx-overlay').addEventListener('mouseleave', () => {
-        xhair.style.display = 'none';
-    });
+    const _overlayProfil = document.getElementById('gpx-overlay');
+    _overlayProfil.addEventListener('mousemove', evt => _onProfilMove(evt.clientX, evt.clientY));
+    _overlayProfil.addEventListener('mouseleave', () => { xhair.style.display = 'none'; });
+    _overlayProfil.addEventListener('touchmove', evt => {
+        evt.preventDefault();
+        _onProfilMove(evt.touches[0].clientX, evt.touches[0].clientY);
+    }, { passive: false });
+    _overlayProfil.addEventListener('touchend', () => { xhair.style.display = 'none'; });
 }
 
 function _dessinerProfilAllure(profilAllure, allureSecMoy) {
@@ -648,8 +646,8 @@ function _dessinerProfilAllure(profilAllure, allureSecMoy) {
         return pt.matrixTransform(svgEl.getScreenCTM().inverse()).x;
     }
 
-    document.getElementById('gpx-ax-overlay').addEventListener('mousemove', evt => {
-        const x = toSvgX(evt);
+    function _onAllureMove(clientX, clientY) {
+        const x = toSvgX({ clientX, clientY });
         const d = Math.max(0, Math.min(dMax, (x - PX) / (W - PX - 10) * dMax));
 
         let idx = 0, minDiff = Infinity;
@@ -669,21 +667,23 @@ function _dessinerProfilAllure(profilAllure, allureSecMoy) {
         const ttY = PY + 4;
         ttBg.setAttribute('x', ttX); ttBg.setAttribute('y', ttY);
         ttBg.setAttribute('width', ttW); ttBg.setAttribute('height', ttH);
-
         [[ttDist, 17], [ttAll, 33]].forEach(([el, dy]) => {
             el.setAttribute('x', ttX + 8); el.setAttribute('y', ttY + dy);
         });
-
         const min = Math.floor(p.a / 60), sec = Math.round(p.a % 60);
         ttDist.textContent = `Distance : ${p.d.toFixed(2)} km`;
         ttAll.textContent  = `Allure : ${min}:${String(sec).padStart(2, '0')}/km`;
-
         xhair.style.display = '';
-    });
+    }
 
-    document.getElementById('gpx-ax-overlay').addEventListener('mouseleave', () => {
-        xhair.style.display = 'none';
-    });
+    const _overlayAllure = document.getElementById('gpx-ax-overlay');
+    _overlayAllure.addEventListener('mousemove', evt => _onAllureMove(evt.clientX, evt.clientY));
+    _overlayAllure.addEventListener('mouseleave', () => { xhair.style.display = 'none'; });
+    _overlayAllure.addEventListener('touchmove', evt => {
+        evt.preventDefault();
+        _onAllureMove(evt.touches[0].clientX, evt.touches[0].clientY);
+    }, { passive: false });
+    _overlayAllure.addEventListener('touchend', () => { xhair.style.display = 'none'; });
 }
 
 /** Remplit les champs d'un onglet cible avec les données GPX */
