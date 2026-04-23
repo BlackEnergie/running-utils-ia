@@ -330,6 +330,49 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-sauvegarder-profil').addEventListener('click', sauvegarderProfil);
     document.getElementById('btn-reinit-profil').addEventListener('click', reinitialiserProfil);
 
+    // Raccourci Entrée : valide le calcul de l'onglet actif
+    const _enterActions = {
+        'tab-allure-vitesse': () => {
+            // Si le focus est dans le bloc vitesse, convertir vitesse→allure, sinon allure→vitesse
+            const active = document.activeElement;
+            if (active && active.closest('#bloc-vitesse-allure')) vitesseToAllure();
+            else allureToVitesse();
+        },
+        'tab-temps-course':   () => {
+            const active = document.activeElement;
+            if (active && active.closest('#bloc-objectif')) calculerAllure();
+            else calculerTemps();
+        },
+        'tab-km-effort':      calculerKE,
+        'tab-gap':            () => {
+            const active = document.activeElement;
+            if (active && active.closest('#bloc-gap-denivele')) calculerGAPDepuisDenivele();
+            else calculerGAPDepuisPente();
+        },
+        'tab-tableau-allures': genererTableau,
+        'tab-prediction':     calculerPredictions,
+        'tab-vma':            () => {
+            const active = document.activeElement;
+            if (active && active.id === 'vma-fcmax-age') estimerFCmax();
+        },
+        'tab-fc':             calculerZonesFC,
+        'tab-hydratation':    calculerHydratation,
+        'tab-nutrition':      calculerNutrition,
+        'tab-plan-course':    genererPlanCourse,
+        'tab-profil':         sauvegarderProfil,
+    };
+
+    document.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        // Ne pas interférer avec textarea, select, button
+        const tag = document.activeElement?.tagName;
+        if (!tag || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON') return;
+        const activeTab = document.querySelector('.tab-pane.show.active');
+        if (!activeTab) return;
+        const action = _enterActions[activeTab.id];
+        if (action) { e.preventDefault(); action(); }
+    });
+
     // Selects / inputs avec changement d'état
     document.getElementById('fc-methode').addEventListener('change', toggleFCInputs);
     document.getElementById('charge-type').addEventListener('change', updateTSSAuto);
