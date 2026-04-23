@@ -200,28 +200,47 @@ function imprimerSection(containerId, titre) {
     w.document.close();
 }
 
-function showTab(tabId) {
+const _VALID_TABS = new Set([
+    'tab-allure-vitesse','tab-temps-course','tab-tableau-allures','tab-prediction',
+    'tab-vma','tab-fc','tab-charge','tab-hydratation','tab-nutrition',
+    'tab-plan-course','tab-gpx','tab-gap','tab-km-effort','tab-profil'
+]);
+
+function showTab(tabId, { pushState = true } = {}) {
+    if (!_VALID_TABS.has(tabId)) return;
     document.querySelectorAll('.tab-pane').forEach(pane => {
         pane.classList.remove('show', 'active');
     });
     const target = document.getElementById(tabId);
-    if (target) {
-        target.classList.add('show', 'active');
-    }
+    if (target) target.classList.add('show', 'active');
     const sidebarLink = document.querySelector('#mainTabs [href="#' + tabId + '"]');
     document.querySelectorAll('#mainTabs .sidebar-link').forEach(l => l.classList.remove('active'));
     if (sidebarLink) sidebarLink.classList.add('active');
     const sel = document.getElementById('mobile-tab-select');
     if (sel) sel.value = tabId;
+    if (pushState && location.hash !== '#' + tabId) {
+        history.pushState({ tabId }, '', '#' + tabId);
+    }
 }
 
 function switchMobileTab(tabId) {
     showTab(tabId);
 }
 
+window.addEventListener('popstate', e => {
+    const tabId = e.state?.tabId || location.hash.replace('#', '');
+    if (_VALID_TABS.has(tabId)) showTab(tabId, { pushState: false });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // Restaurer les traces GPX sauvegardées
     if (typeof _chargerGPX === 'function') _chargerGPX();
+
+    // Restaurer l'onglet depuis le hash de l'URL
+    const hashTab = location.hash.replace('#', '');
+    if (_VALID_TABS.has(hashTab)) {
+        showTab(hashTab, { pushState: false });
+    }
 
     // Mobile tab select
     document.getElementById('mobile-tab-select').addEventListener('change', function() {
