@@ -235,6 +235,8 @@ window.addEventListener('popstate', e => {
 document.addEventListener('DOMContentLoaded', () => {
     // Restaurer les traces GPX sauvegardées
     if (typeof _chargerGPX === 'function') _chargerGPX();
+    // Afficher les badges "Ajouter une trace" si aucune trace chargée
+    if (typeof _majBadgesGPX === 'function') _majBadgesGPX();
 
     // Restaurer l'onglet depuis le hash de l'URL
     const hashTab = location.hash.replace('#', '');
@@ -287,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const { action: act, idx, km } = action.dataset;
         if (act === 'select-model')  { selectModel(action.dataset.model); return; }
         if (act === 'select-seance') { selectSeance(action.dataset.seance); return; }
+        if (act === 'nav-tab')       { e.preventDefault(); showTab(action.dataset.tab); return; }
         if (act === 'supprimer-seance')  { supprimerSeance(parseInt(idx, 10)); return; }
         if (act === 'remove-ravito')     { planRemoveRavitaillement(parseFloat(km)); return; }
         if (act === 'qty-dec')           { changeQty(parseInt(idx, 10), -1); return; }

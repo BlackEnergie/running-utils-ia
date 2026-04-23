@@ -168,6 +168,20 @@ body {
     border-color: #e65100;
 }
 
+.badge-gpx-add {
+    background-color: #fff3e0;
+    color: #e65100;
+    border-color: #ffcc80;
+    text-decoration: none;
+    font-style: italic;
+}
+
+.badge-gpx-add:hover {
+    background-color: #e65100;
+    color: white;
+    border-color: #e65100;
+}
+
 /* ===== TRACES GPX ===== */
 .gpx-trace-card {
     display: inline-flex;

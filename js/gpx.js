@@ -409,10 +409,11 @@ const _GPX_CHAMPS = {
 };
 
 function _majBadgesGPX() {
+    const badgeAjout = `<a href="#tab-gpx" data-action="nav-tab" data-tab="tab-gpx" class="badge-gpx badge-gpx-add" title="Importer une trace GPX">+ Ajouter une trace GPX</a>`;
     Object.keys(_GPX_CHAMPS).forEach(cible => {
         const container = document.getElementById('gpx-badge-' + cible);
         if (!container) return;
-        if (gpxListe.length === 0) { container.innerHTML = ''; return; }
+        if (gpxListe.length === 0) { container.innerHTML = badgeAjout; return; }
         container.innerHTML = gpxListe.map((t, i) => {
             const nom   = t.nomFichier.replace(/\.gpx$/i, '');
             const label = '📍 ' + (nom.length > 14 ? nom.slice(0, 13) + '…' : nom);
