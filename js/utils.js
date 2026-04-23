@@ -315,6 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-ajouter-aliment').addEventListener('click', ajouterAlimentCustom);
     document.getElementById('btn-plan-ravi').addEventListener('click', planAddRavitaillement);
     document.getElementById('btn-generer-plan').addEventListener('click', genererPlanCourse);
+    document.querySelectorAll('input[name="plan-mode"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            const isTemps = radio.value === 'temps';
+            document.getElementById('plan-bloc-allure').style.display = isTemps ? 'none' : '';
+            document.getElementById('plan-bloc-temps').style.display  = isTemps ? '' : 'none';
+        });
+    });
     document.getElementById('btn-export-plan').addEventListener('click', exportPlanCSV);
     document.getElementById('btn-copy-plan').addEventListener('click', function() { copierTableauTexte('plan-table', this); });
     document.getElementById('btn-print-plan').addEventListener('click', () => imprimerSection('plan-table', 'Plan de course'));

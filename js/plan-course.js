@@ -38,24 +38,38 @@ function planRenderRaviList() {
 function genererPlanCourse() {
     clearFieldErrors('plan-distance', 'plan-allure-min', 'plan-poids');
     const dist      = parseFloat(document.getElementById("plan-distance").value);
-    const minVal    = parseFloat(document.getElementById("plan-allure-min").value) || 0;
-    const secVal    = parseFloat(document.getElementById("plan-allure-sec").value) || 0;
     const poids     = parseFloat(document.getElementById("plan-poids").value);
     const temp      = document.getElementById("plan-temperature").value;
     const humi      = document.getElementById("plan-humidite").value;
     const transpi   = document.getElementById("plan-transpiration").value;
     const intervEau = parseInt(document.getElementById("plan-interv-eau").value) || 20;
+    const intervalleKm = parseFloat(document.getElementById("plan-intervalle-km").value) || 0;
     const dPlus     = parseFloat(document.getElementById("plan-dplus").value)  || 0;
     const dMoins    = parseFloat(document.getElementById("plan-dminus").value) || 0;
+    const mode      = document.querySelector('input[name="plan-mode"]:checked')?.value || 'allure';
 
     if (!dist || dist <= 0) return showFieldError('plan-distance', 'Distance invalide.');
-    if (minVal === 0 && secVal === 0) return showFieldError('plan-allure-min', 'Allure invalide.');
     if (!poids || poids <= 0) return showFieldError('plan-poids', 'Poids invalide.');
 
-    const allureSec = minVal * 60 + secVal;
-    const ke        = calculerKmEfforts(dist, dPlus, dMoins);
-    const dureeMin  = (allureSec * ke) / 60;
-    const dureeH    = dureeMin / 60;
+    const ke = calculerKmEfforts(dist, dPlus, dMoins);
+    let allureSec, dureeMin;
+
+    if (mode === 'temps') {
+        const h   = parseFloat(document.getElementById("plan-temps-h").value)   || 0;
+        const min = parseFloat(document.getElementById("plan-temps-min").value) || 0;
+        const sec = parseFloat(document.getElementById("plan-temps-sec").value) || 0;
+        const totalSec = h * 3600 + min * 60 + sec;
+        if (totalSec <= 0) return showFieldError('plan-allure-min', 'Temps cible invalide.');
+        dureeMin  = totalSec / 60;                 // durée exacte = ce que l'utilisateur a saisi
+        allureSec = totalSec / ke;                 // allure effective par km-effort
+    } else {
+        const minVal = parseFloat(document.getElementById("plan-allure-min").value) || 0;
+        const secVal = parseFloat(document.getElementById("plan-allure-sec").value) || 0;
+        if (minVal === 0 && secVal === 0) return showFieldError('plan-allure-min', 'Allure invalide.');
+        allureSec = minVal * 60 + secVal;
+        dureeMin  = (allureSec * ke) / 60;
+    }
+    const dureeH = dureeMin / 60;
 
     // -------- HYDRATATION --------
     const sweatRate = calculerSweatRate(transpi, temp, humi);
@@ -95,7 +109,8 @@ function genererPlanCourse() {
         let minuteGel    = premierGelMin;
 
         while (gelsAPlacers > 0 && minuteGel <= finNutri) {
-            const km = parseFloat((minuteGel / (allureSec / 60)).toFixed(1));
+            const km = Math.min(parseFloat((minuteGel / (allureSec / 60)).toFixed(1)), parseFloat((dist - 0.5).toFixed(1)));
+            if (km <= 0) { minuteGel += gelInterv; gelsAPlacers--; continue; }
             const ratio = minuteGel / dureeMin;
 
             // Suggestion d'aliment selon progression et disponibilité ravito
@@ -130,7 +145,7 @@ function genererPlanCourse() {
     pointsGel.forEach((g, i) => { g.numGel = i + 1; });
 
     // -------- TEMPS DE PASSAGE --------
-    const checkpoints = genererCheckpoints(dist);
+    const checkpoints = genererCheckpoints(dist, intervalleKm);
 
     // -------- ASSEMBLAGE DU PLAN --------
     let events = [];
@@ -139,8 +154,9 @@ function genererPlanCourse() {
     events.push({ minuteCourse: 0,  type: "depart", label: "🚀 Départ", detail: "C'est parti !", km: 0 });
 
     checkpoints.forEach(cp => {
-        const tMin = Math.round((cp.km * allureSec) / 60);
-        events.push({ minuteCourse: tMin, type: "passage", label: `📍 ${cp.label}`, detail: formatTemps(cp.km * allureSec), km: cp.km });
+        const tSec = Math.round(cp.km * allureSec);
+        const tMin = tSec / 60;
+        events.push({ minuteCourse: tMin, type: "passage", label: `📍 ${cp.label}`, detail: `Temps de passage cible : ${formatTemps(tSec)}`, km: cp.km });
     });
 
     pointsEau.forEach(p => {
@@ -169,7 +185,15 @@ function genererPlanCourse() {
     document.getElementById("plan-results").style.display = "block";
 }
 
-function genererCheckpoints(dist) {
+function genererCheckpoints(dist, intervalleKm) {
+    if (intervalleKm && intervalleKm > 0) {
+        const points = [];
+        for (let k = intervalleKm; k < dist - 0.1; k += intervalleKm) {
+            const km = Math.round(k * 100) / 100;
+            points.push({ km, label: `${km} km` });
+        }
+        return points;
+    }
     const points = [];
     const standards = [
         { km: 5, label: "5 km" }, { km: 10, label: "10 km" }, { km: 15, label: "15 km" },

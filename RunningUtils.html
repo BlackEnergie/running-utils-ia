@@ -1511,21 +1511,61 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Allure cible (min/km)</label>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" id="plan-allure-min" min="0" placeholder="min"/>
-                                            <span class="input-group-text">min</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" id="plan-allure-sec" min="0" max="59" placeholder="sec"/>
-                                            <span class="input-group-text">sec</span>
-                                        </div>
-                                    </div>
+                                <label class="form-label fw-semibold">Objectif</label>
+                                <div class="btn-group w-100 mb-2" role="group">
+                                    <input type="radio" class="btn-check" name="plan-mode" id="plan-mode-allure" value="allure" checked/>
+                                    <label class="btn btn-outline-secondary btn-sm" for="plan-mode-allure">Allure cible</label>
+                                    <input type="radio" class="btn-check" name="plan-mode" id="plan-mode-temps" value="temps"/>
+                                    <label class="btn btn-outline-secondary btn-sm" for="plan-mode-temps">Temps cible</label>
                                 </div>
+                                <div id="plan-bloc-allure">
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="plan-allure-min" min="0" placeholder="min"/>
+                                                <span class="input-group-text">min</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="plan-allure-sec" min="0" max="59" placeholder="sec"/>
+                                                <span class="input-group-text">sec</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-text">min/km</div>
+                                </div>
+                                <div id="plan-bloc-temps" style="display:none">
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="plan-temps-h" min="0" placeholder="h"/>
+                                                <span class="input-group-text">h</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="plan-temps-min" min="0" max="59" placeholder="min"/>
+                                                <span class="input-group-text">min</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="plan-temps-sec" min="0" max="59" placeholder="sec"/>
+                                                <span class="input-group-text">sec</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-text">Temps total pour la distance saisie</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Temps de passage <span class="text-muted fw-normal">(tous les X km)</span></label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="plan-intervalle-km" min="1" max="50" placeholder="Ex: 5"/>
+                                    <span class="input-group-text">km</span>
+                                </div>
+                                <div class="form-text">Laissez vide pour les points standards (5, 10, 21, 30…)</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Poids (kg)</label>
