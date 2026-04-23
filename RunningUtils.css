@@ -86,6 +86,7 @@ body {
         opacity: 0;
         transform: translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -181,23 +182,28 @@ body {
     font-size: 0.82rem;
     user-select: none;
 }
+
 .gpx-trace-card:hover {
     border-color: #e8500a;
     background: #fff3e0;
 }
+
 .gpx-trace-card.active {
     border-color: #e8500a;
     background: #fff3e0;
     color: #e65100;
     font-weight: 500;
 }
+
 .gpx-trace-stats {
     color: #999;
     font-size: 0.75rem;
 }
+
 .gpx-trace-card.active .gpx-trace-stats {
     color: #e88050;
 }
+
 .gpx-trace-suppr {
     font-size: 1rem;
     line-height: 1;
@@ -206,6 +212,7 @@ body {
     border-radius: 50%;
     transition: all 0.15s;
 }
+
 .gpx-trace-suppr:hover {
     color: #e74c3c;
     background: #fde8e8;
@@ -225,7 +232,7 @@ footer {
     align-self: flex-start;
     background: white;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     padding: 16px 12px;
     gap: 2px;
 }
@@ -277,8 +284,8 @@ footer {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255,255,255,.18);
-    border: 1.5px solid rgba(255,255,255,.4);
+    background: rgba(255, 255, 255, .18);
+    border: 1.5px solid rgba(255, 255, 255, .4);
     border-radius: 50px;
     padding: 6px 16px;
     color: white;
@@ -288,10 +295,29 @@ footer {
     backdrop-filter: blur(4px);
     transition: background 0.15s;
 }
-.mobile-profil-pill:hover { background: rgba(255,255,255,.28); color: white; }
-.mobile-profil-pill .mp-avatar { font-size: 1.1rem; }
-.mobile-profil-pill .mp-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
-.mobile-profil-pill .mp-chip  { background: rgba(255,255,255,.2); border-radius: 20px; padding: 1px 8px; font-size: .75rem; }
+
+.mobile-profil-pill:hover {
+    background: rgba(255, 255, 255, .28);
+    color: white;
+}
+
+.mobile-profil-pill .mp-avatar {
+    font-size: 1.1rem;
+}
+
+.mobile-profil-pill .mp-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mobile-profil-pill .mp-chip {
+    background: rgba(255, 255, 255, .2);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: .75rem;
+}
 
 /* ===== PROFIL SIDEBAR CARD ===== */
 .sidebar-profil-card {
@@ -308,11 +334,42 @@ footer {
     transition: background 0.15s;
     cursor: pointer;
 }
-.sidebar-profil-card:hover { background: #d4e4fd; color: #1a3a6e; }
-.sidebar-profil-card .sp-avatar { font-size: 1.9rem; line-height: 1; }
-.sidebar-profil-card .sp-name  { font-weight: 700; font-size: .88rem; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #1a3a6e; }
-.sidebar-profil-card .sp-stats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.sidebar-profil-card .sp-chip  { background: rgba(26,58,110,.12); border-radius: 20px; padding: 2px 8px; font-size: .72rem; color: #1a3a6e; font-weight: 600; }
+
+.sidebar-profil-card:hover {
+    background: #d4e4fd;
+    color: #1a3a6e;
+}
+
+.sidebar-profil-card .sp-avatar {
+    font-size: 1.9rem;
+    line-height: 1;
+}
+
+.sidebar-profil-card .sp-name {
+    font-weight: 700;
+    font-size: .88rem;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #1a3a6e;
+}
+
+.sidebar-profil-card .sp-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sidebar-profil-card .sp-chip {
+    background: rgba(26, 58, 110, .12);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: .72rem;
+    color: #1a3a6e;
+    font-weight: 600;
+}
 
 /* ===== ONGLETS (desktop) ===== */
 .tab-content {
@@ -321,6 +378,24 @@ footer {
 
 /* ===== RESPONSIVE MOBILE ===== */
 @media (max-width: 768px) {
+    .nav-tabs {
+        display: none !important;
+    }
+
+    .mobile-nav-select {
+        display: block;
+    }
+
+    .tab-content {
+        padding-top: 12px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-nav-select {
+        display: none;
+    }
+}
 
 .mobile-nav-select select {
     font-size: 1rem;
@@ -338,6 +413,8 @@ footer {
     outline: none;
     box-shadow: 0 0 0 0.2rem rgba(232, 80, 10, 0.2);
 }
+
+/* ===== INFOBULLES ===== */
 .info-bubble {
     background-color: #e8f4fd;
     border-radius: 10px;
@@ -388,11 +465,12 @@ footer {
 /* ===== SÉANCES VMA ===== */
 .seance-card {
     border-radius: 14px;
-    border: 2px solid #e9ecef;
+    border: 2px solid #dee2e6;
     padding: 16px;
     cursor: pointer;
     transition: all 0.2s;
     background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .seance-card:hover {
@@ -495,42 +573,3 @@ footer {
 .progress {
     border-radius: 8px;
 }
-
-/* ===== RESPONSIVE MOBILE ===== */
-@media (max-width: 768px) {
-    .nav-tabs {
-        display: none !important;
-    }
-
-    .mobile-nav-select {
-        display: block;
-    }
-
-    .tab-content {
-        padding-top: 12px;
-    }
-}
-
-@media (min-width: 769px) {
-    .mobile-nav-select {
-        display: none;
-    }
-}
-
-.mobile-nav-select select {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--secondary);
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    padding: 10px 14px;
-    background: white;
-    width: 100%;
-    cursor: pointer;
-}
-
-.mobile-nav-select select:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(232, 80, 10, 0.2);
-}
-

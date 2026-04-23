@@ -270,15 +270,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Composants statiques
         const badge = e.target.closest('.badge-distance[data-target]');
         if (badge) { setDistanceField(badge.dataset.target, parseFloat(badge.dataset.value)); return; }
-        const modelCard = e.target.closest('.model-card[data-model]');
-        if (modelCard && !e.target.closest('a, input')) { selectModel(modelCard.dataset.model); return; }
-        const seanceCard = e.target.closest('.seance-card[data-seance]');
-        if (seanceCard && !e.target.closest('a')) { selectSeance(seanceCard.dataset.seance); return; }
 
-        // Actions dynamiques (templates innerHTML)
+        // Lien externe à l'intérieur d'une card : sélectionner la card ET laisser le navigateur suivre le lien
+        const extLink = e.target.closest('a[href]:not([href^="#"])');
+        if (extLink) {
+            const mc = extLink.closest('.model-card[data-model]');
+            if (mc) selectModel(mc.dataset.model);
+            const sc = extLink.closest('.seance-card[data-seance]');
+            if (sc) selectSeance(sc.dataset.seance);
+            return; // laisser le navigateur ouvrir le lien
+        }
+
+        // Actions dynamiques (data-action) — inclut select-model, select-seance, etc.
         const action = e.target.closest('[data-action]');
         if (!action) return;
         const { action: act, idx, km } = action.dataset;
+        if (act === 'select-model')  { selectModel(action.dataset.model); return; }
+        if (act === 'select-seance') { selectSeance(action.dataset.seance); return; }
         if (act === 'supprimer-seance')  { supprimerSeance(parseInt(idx, 10)); return; }
         if (act === 'remove-ravito')     { planRemoveRavitaillement(parseFloat(km)); return; }
         if (act === 'qty-dec')           { changeQty(parseInt(idx, 10), -1); return; }

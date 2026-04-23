@@ -477,7 +477,7 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card selected" id="model-riegel" data-model="riegel">
+                            <div class="model-card selected" id="model-riegel" data-model="riegel" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📐 Riegel (1977)</div>
                                     <div class="accuracy-stars">⭐⭐⭐</div>
@@ -492,7 +492,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-riegel_var" data-model="riegel_var">
+                            <div class="model-card" id="model-riegel_var" data-model="riegel_var" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📐 Riegel variable</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -516,7 +516,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-cameron" data-model="cameron">
+                            <div class="model-card" id="model-cameron" data-model="cameron" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">🧮 Cameron</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -533,7 +533,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-vo2max" data-model="vo2max">
+                            <div class="model-card" id="model-vo2max" data-model="vo2max" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">💨 Daniels & Gilbert</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐⭐</div>
@@ -548,7 +548,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-purdy" data-model="purdy">
+                            <div class="model-card" id="model-purdy" data-model="purdy" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">📊 Purdy (1974)</div>
                                     <div class="accuracy-stars">⭐⭐⭐⭐</div>
@@ -563,7 +563,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <div class="model-card" id="model-all" data-model="all">
+                            <div class="model-card" id="model-all" data-model="all" data-action="select-model">
                                 <div class="d-flex justify-content-between">
                                     <div class="model-title">🔀 Comparer tous</div>
                                     <div class="accuracy-stars">📊</div>
@@ -704,6 +704,7 @@
                                     class="seance-card selected mb-3"
                                     id="seance-demi-cooper"
                                     data-seance="demi-cooper"
+                                    data-action="select-seance"
                             >
                                 <div class="d-flex justify-content-between">
                                     <div class="seance-title">🏃 Demi-Cooper (6 min)</div>
@@ -719,7 +720,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-cooper" data-seance="cooper">
+                            <div class="seance-card mb-3" id="seance-cooper" data-seance="cooper" data-action="select-seance">
                                 <div class="seance-title">🏃 Cooper (12 min)</div>
                                 <div class="seance-desc">Courez le plus loin possible en 12 minutes.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
@@ -731,7 +732,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-vameval" data-seance="vameval">
+                            <div class="seance-card mb-3" id="seance-vameval" data-seance="vameval" data-action="select-seance">
                                 <div class="seance-title">📻 Vameval</div>
                                 <div class="seance-desc">
                                     Test progressif avec bips sonores, +0,5 km/h par minute.
@@ -746,7 +747,7 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-leger" data-seance="leger">
+                            <div class="seance-card mb-3" id="seance-leger" data-seance="leger" data-action="select-seance">
                                 <div class="seance-title">🔔 Léger-Boucher (navette)</div>
                                 <div class="seance-desc">Test navette progressif sur 20m avec bips.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
@@ -758,14 +759,14 @@
                                 >
                                 </div>
                             </div>
-                            <div class="seance-card mb-3" id="seance-3200" data-seance="3200">
+                            <div class="seance-card mb-3" id="seance-3200" data-seance="3200" data-action="select-seance">
                                 <div class="seance-title">🏟️ Test 3200m</div>
                                 <div class="seance-desc">Courez 3200m le plus vite possible.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
                                     <strong>Formule :</strong> VMA = 3,2 / (temps en h) × 0,925
                                 </div>
                             </div>
-                            <div class="seance-card" id="seance-5min" data-seance="5min">
+                            <div class="seance-card" id="seance-5min" data-seance="5min" data-action="select-seance">
                                 <div class="seance-title">⏱️ Test 5 minutes</div>
                                 <div class="seance-desc">Courez le plus loin possible en 5 minutes.</div>
                                 <div class="mt-2 p-2 bg-light rounded small">
