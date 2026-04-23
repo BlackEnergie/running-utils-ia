@@ -148,9 +148,8 @@ body {
     background-color: #fff3e0;
     color: #e65100;
     border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    padding: 4px 12px;
+    font-size: 0.8rem;
     cursor: pointer;
     border: 1px solid #ffcc80;
     transition: all 0.2s;
@@ -160,6 +159,56 @@ body {
 .badge-gpx:hover {
     background-color: #e65100;
     color: white;
+}
+
+.badge-gpx.active {
+    background-color: #e65100;
+    color: white;
+    border-color: #e65100;
+}
+
+/* ===== TRACES GPX ===== */
+.gpx-trace-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #dee2e6;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.82rem;
+    user-select: none;
+}
+.gpx-trace-card:hover {
+    border-color: #e8500a;
+    background: #fff3e0;
+}
+.gpx-trace-card.active {
+    border-color: #e8500a;
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: 500;
+}
+.gpx-trace-stats {
+    color: #999;
+    font-size: 0.75rem;
+}
+.gpx-trace-card.active .gpx-trace-stats {
+    color: #e88050;
+}
+.gpx-trace-suppr {
+    font-size: 1rem;
+    line-height: 1;
+    color: #bbb;
+    padding: 0 3px;
+    border-radius: 50%;
+    transition: all 0.15s;
+}
+.gpx-trace-suppr:hover {
+    color: #e74c3c;
+    background: #fde8e8;
 }
 
 /* ===== FOOTER ===== */

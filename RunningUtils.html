@@ -30,7 +30,6 @@
         <select id="mobile-tab-select">
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
-            <option value="tab-gpx">📁 Analyse GPX</option>
             <option value="tab-km-effort">⛰️ Kilomètres Effort</option>
             <option value="tab-gap">📊 GAP — Allure Ajustée</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
@@ -41,6 +40,7 @@
             <option value="tab-hydratation">💧 Hydratation</option>
             <option value="tab-nutrition">🍳 Nutrition</option>
             <option value="tab-plan-course">📋 Plan de course</option>
+            <option value="tab-gpx">📁 Import GPX</option>
             <option value="tab-profil">👤 Mon profil</option>
         </select>
     </div>
@@ -54,9 +54,6 @@
             </a>
             <a class="sidebar-link" href="#tab-temps-course">
                 <i class="bi bi-trophy"></i>Temps de course
-            </a>
-            <a class="sidebar-link" href="#tab-gpx">
-                <i class="bi bi-file-earmark-arrow-up"></i>Analyse GPX
             </a>
             <a class="sidebar-link" href="#tab-km-effort">
                 <i class="bi bi-triangle"></i>Kilomètres Effort
@@ -89,6 +86,9 @@
             </a>
             <a class="sidebar-link" href="#tab-plan-course">
                 <i class="bi bi-journal-check"></i>Plan de course
+            </a>
+            <a class="sidebar-link" href="#tab-gpx">
+                <i class="bi bi-file-earmark-arrow-up"></i>Import GPX
             </a>
         </nav>
 
@@ -211,7 +211,7 @@
                                 <span class="badge-distance" data-target="tc-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="tc-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="tc-distance" data-value="42.195">Marathon</span>
-                                <span class="badge-gpx" id="gpx-badge-tc" data-action="gpx-badge" data-cible="tc" style="display:none"></span>
+                                <span id="gpx-badge-tc"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -287,7 +287,7 @@
                                 <span class="badge-distance" data-target="obj-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="obj-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="obj-distance" data-value="42.195">Marathon</span>
-                                <span class="badge-gpx" id="gpx-badge-obj" data-action="gpx-badge" data-cible="obj" style="display:none"></span>
+                                <span id="gpx-badge-obj"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -578,7 +578,7 @@
                                 <span class="badge-distance" data-target="pred-dist" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="pred-dist" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="pred-dist" data-value="42.195">Marathon</span>
-                                <span class="badge-gpx" id="gpx-badge-pred" data-action="gpx-badge" data-cible="pred" style="display:none"></span>
+                                <span id="gpx-badge-pred"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1160,7 +1160,7 @@
                                 <span class="badge-distance" data-target="hydra-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="hydra-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="hydra-distance" data-value="42.195">Marathon</span>
-                                <span class="badge-gpx" id="gpx-badge-hydra" data-action="gpx-badge" data-cible="hydra" style="display:none"></span>
+                                <span id="gpx-badge-hydra"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1306,7 +1306,7 @@
                                 <span class="badge-distance" data-target="nutri-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="nutri-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="nutri-distance" data-value="42.195">Marathon</span>
-                                <span class="badge-gpx" id="gpx-badge-nutri" data-action="gpx-badge" data-cible="nutri" style="display:none"></span>
+                                <span id="gpx-badge-nutri"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1490,7 +1490,7 @@
                                     <span class="badge-distance" data-target="plan-distance" data-value="15">15 km</span>
                                     <span class="badge-distance" data-target="plan-distance" data-value="21.0975">Semi</span>
                                     <span class="badge-distance" data-target="plan-distance" data-value="42.195">Marathon</span>
-                                    <span class="badge-gpx" id="gpx-badge-plan" data-action="gpx-badge" data-cible="plan" style="display:none"></span>
+                                    <span id="gpx-badge-plan"></span>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -1611,7 +1611,7 @@
                     <div id="gpx-dropzone" class="d-flex align-items-center gap-3 px-4 py-3 rounded" style="border:2px dashed #dee2e6;cursor:pointer;transition:border-color .2s">
                         <i class="bi bi-file-earmark-arrow-up fs-4 text-muted flex-shrink-0"></i>
                         <span class="text-muted small flex-grow-1">Glissez un fichier <strong>.gpx</strong> ici ou cliquez pour sélectionner</span>
-                        <input type="file" id="gpx-input" accept=".gpx" class="d-none"/>
+                        <input type="file" id="gpx-input" accept=".gpx" multiple class="d-none"/>
                         <button class="btn btn-convert btn-sm px-3 flex-shrink-0" onclick="document.getElementById('gpx-input').click()">
                             <i class="bi bi-folder2-open me-1"></i>Parcourir…
                         </button>
@@ -1621,6 +1621,7 @@
                         <div class="spinner-border text-primary" role="status"></div>
                         <p class="text-muted small mt-2">Analyse en cours…</p>
                     </div>
+                    <div id="gpx-liste" class="d-flex flex-wrap gap-2 mt-3" style="display:none!important"></div>
                 </div>
             </div>
 
@@ -1862,13 +1863,6 @@
                                         <input type="number" class="form-control" id="ke-distance" min="0" step="0.001" placeholder="Ex: 42.195"/>
                                         <span class="input-group-text">km</span>
                                     </div>
-                                    <div class="d-flex flex-wrap gap-1 mt-2">
-                                        <span class="badge-distance" data-target="ke-distance" data-value="5">5 km</span>
-                                        <span class="badge-distance" data-target="ke-distance" data-value="10">10 km</span>
-                                        <span class="badge-distance" data-target="ke-distance" data-value="21.0975">Semi</span>
-                                        <span class="badge-distance" data-target="ke-distance" data-value="42.195">Marathon</span>
-                                        <span class="badge-gpx" id="gpx-badge-ke" data-action="gpx-badge" data-cible="ke" style="display:none"></span>
-                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label fw-semibold">Dénivelé positif</label>
@@ -1884,6 +1878,13 @@
                                         <span class="input-group-text">m D−</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 mt-2">
+                                <span class="badge-distance" data-target="ke-distance" data-value="5">5 km</span>
+                                <span class="badge-distance" data-target="ke-distance" data-value="10">10 km</span>
+                                <span class="badge-distance" data-target="ke-distance" data-value="21.0975">Semi</span>
+                                <span class="badge-distance" data-target="ke-distance" data-value="42.195">Marathon</span>
+                                <span id="gpx-badge-ke"></span>
                             </div>
                             <button class="btn btn-convert w-100 mt-4" id="btn-calculer-ke">
                                 <i class="bi bi-calculator me-2"></i>Calculer

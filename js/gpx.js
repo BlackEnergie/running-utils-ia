@@ -4,6 +4,31 @@
 
 /** Résultat de la dernière analyse, accessible par les autres modules */
 let gpxData = null;
+/** Liste de toutes les traces importées */
+let gpxListe = [];
+
+const _GPX_LS_KEY = 'ru_gpx_traces';
+
+function _sauvegarderGPX() {
+    try {
+        // On stocke l'index de la trace active
+        const actifIdx = gpxListe.indexOf(gpxData);
+        localStorage.setItem(_GPX_LS_KEY, JSON.stringify({ traces: gpxListe, actif: actifIdx }));
+    } catch (e) { /* quota dépassé : on ignore */ }
+}
+
+function _chargerGPX() {
+    try {
+        const raw = localStorage.getItem(_GPX_LS_KEY);
+        if (!raw) return;
+        const { traces, actif } = JSON.parse(raw);
+        if (!Array.isArray(traces) || traces.length === 0) return;
+        gpxListe = traces;
+        gpxData  = gpxListe[actif >= 0 && actif < gpxListe.length ? actif : 0];
+        _rendreListe();
+        _afficherResultatGPX(gpxData);
+    } catch (e) { /* données corrompues : on ignore */ }
+}
 
 /** Distance Haversine entre deux points GPS (en mètres) */
 function haversine(lat1, lon1, lat2, lon2) {
@@ -115,13 +140,21 @@ function gpxHandleFile(file) {
     }
     document.getElementById('gpx-error').style.display = 'none';
     document.getElementById('gpx-loading').style.display = 'block';
-    document.getElementById('gpx-result').style.display  = 'none';
 
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
-            gpxData = parseGPX(e.target.result);
-            gpxData.nomFichier = file.name;
+            const data = parseGPX(e.target.result);
+            data.nomFichier = file.name;
+            const existing = gpxListe.findIndex(t => t.nomFichier === file.name);
+            if (existing >= 0) {
+                gpxListe[existing] = data;
+            } else {
+                gpxListe.push(data);
+            }
+            gpxData = data;
+            _sauvegarderGPX();
+            _rendreListe();
             _afficherResultatGPX(gpxData);
         } catch (err) {
             document.getElementById('gpx-error').textContent = err.message;
@@ -131,6 +164,94 @@ function gpxHandleFile(file) {
         }
     };
     reader.readAsText(file);
+}
+
+function _rendreListe() {
+    const el = document.getElementById('gpx-liste');
+    if (!el) return;
+    if (gpxListe.length === 0) { el.style.display = 'none'; el.innerHTML = ''; return; }
+    el.style.display = 'flex';
+    el.innerHTML = gpxListe.map((t, i) => {
+        const actif = t === gpxData;
+        const nom   = t.nomFichier.replace(/\.gpx$/i, '');
+        return `<span class="gpx-trace-card${actif ? ' active' : ''}" data-action="gpx-select" data-idx="${i}">
+            <span class="gpx-trace-nom">📍 ${nom}</span>
+            <span class="gpx-trace-stats">${t.distKm.toFixed(1)} km · D+${t.dPlus} m</span>
+            <span class="gpx-trace-suppr" data-action="gpx-rename" data-idx="${i}" title="Renommer"><i class="bi bi-pencil" style="font-size:0.75rem;pointer-events:none"></i></span>
+            <span class="gpx-trace-suppr" data-action="gpx-suppr" data-idx="${i}" title="Supprimer">×</span>
+        </span>`;
+    }).join('');
+}
+
+function gpxSelectTrace(idx) {
+    if (idx < 0 || idx >= gpxListe.length) return;
+    gpxData = gpxListe[idx];
+    _rendreListe();
+    _afficherResultatGPX(gpxData);
+}
+
+function gpxRenommerTrace(idx) {
+    if (idx < 0 || idx >= gpxListe.length) return;
+    // Trouver le span du nom dans la liste
+    const cards = document.querySelectorAll('#gpx-liste .gpx-trace-card');
+    const card = cards[idx];
+    if (!card) return;
+    const nomSpan = card.querySelector('.gpx-trace-nom');
+    if (!nomSpan) return;
+
+    const nomActuel = gpxListe[idx].nomFichier.replace(/\.gpx$/i, '');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = nomActuel;
+    input.style.cssText = 'border:none;background:transparent;outline:1px solid #e8500a;border-radius:4px;padding:1px 4px;font-size:0.82rem;width:' + Math.max(80, nomActuel.length * 8) + 'px;color:inherit;';
+
+    // Empêcher le clic sur la carte pendant l'édition
+    card.dataset.action = '';
+
+    function confirmer() {
+        const nouveau = input.value.trim();
+        if (nouveau) gpxListe[idx].nomFichier = nouveau + '.gpx';
+        _sauvegarderGPX();
+        card.dataset.action = 'gpx-select';
+        _rendreListe();
+        if (gpxListe[idx] === gpxData) {
+            document.getElementById('gpx-nom').textContent = gpxListe[idx].nomFichier;
+        }
+        _majBadgesGPX();
+    }
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter')  { e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape') { input.value = nomActuel; input.blur(); }
+    });
+    input.addEventListener('blur', confirmer);
+
+    nomSpan.textContent = '';
+    nomSpan.prepend('📍 ');
+    nomSpan.appendChild(input);
+    input.focus();
+    input.select();
+}
+
+function gpxSupprimerTrace(idx) {
+    if (idx < 0 || idx >= gpxListe.length) return;
+    const removed = gpxListe.splice(idx, 1)[0];
+    if (gpxListe.length === 0) {
+        gpxData = null;
+        document.getElementById('gpx-result').style.display = 'none';
+        Object.keys(_GPX_CHAMPS).forEach(c => {
+            const el = document.getElementById('gpx-badge-' + c);
+            if (el) el.innerHTML = '';
+        });
+    } else {
+        if (gpxData === removed) {
+            gpxData = gpxListe[Math.min(idx, gpxListe.length - 1)];
+            _afficherResultatGPX(gpxData);
+        }
+        _majBadgesGPX();
+    }
+    _sauvegarderGPX();
+    _rendreListe();
 }
 
 function _afficherResultatGPX(d) {
@@ -162,7 +283,7 @@ function _afficherResultatGPX(d) {
     }
 
     document.getElementById('gpx-result').style.display = 'block';
-    _majBadgesGPX(d);
+    _majBadgesGPX();
 }
 
 // Mapping cible → champs à remplir
@@ -176,29 +297,34 @@ const _GPX_CHAMPS = {
     ke:    { dist: 'ke-distance',    dplus: 'ke-dplus',    dminus: 'ke-dminus'    },
 };
 
-function _majBadgesGPX(d) {
-    const nom = d.nomFichier.replace(/\.gpx$/i, '');
-    const label = '📍 ' + (nom.length > 14 ? nom.slice(0, 13) + '…' : nom);
+function _majBadgesGPX() {
     Object.keys(_GPX_CHAMPS).forEach(cible => {
-        const el = document.getElementById('gpx-badge-' + cible);
-        if (!el) return;
-        el.textContent = label;
-        el.title = nom;
-        el.style.display = 'inline-block';
+        const container = document.getElementById('gpx-badge-' + cible);
+        if (!container) return;
+        if (gpxListe.length === 0) { container.innerHTML = ''; return; }
+        container.innerHTML = gpxListe.map((t, i) => {
+            const nom   = t.nomFichier.replace(/\.gpx$/i, '');
+            const label = '📍 ' + (nom.length > 14 ? nom.slice(0, 13) + '…' : nom);
+            return `<span class="badge-gpx" data-action="gpx-badge" data-cible="${cible}" data-idx="${i}" title="${nom}">${label}</span>`;
+        }).join('');
     });
 }
 
-function gpxAppliquerBadge(cible) {
-    if (!gpxData) return;
+function gpxAppliquerBadge(cible, idx) {
+    const trace = (idx !== undefined && gpxListe[idx]) ? gpxListe[idx] : gpxData;
+    if (!trace) return;
     const champs = _GPX_CHAMPS[cible];
     if (!champs) return;
     function set(id, val) {
         const el = document.getElementById(id);
         if (el && val !== undefined && val !== null) el.value = val;
     }
-    set(champs.dist,   parseFloat(gpxData.distKm.toFixed(2)));
-    if (champs.dplus)  set(champs.dplus,  gpxData.dPlus);
-    if (champs.dminus) set(champs.dminus, gpxData.dMoins);
+    set(champs.dist,   parseFloat(trace.distKm.toFixed(2)));
+    if (champs.dplus)  set(champs.dplus,  trace.dPlus);
+    if (champs.dminus) set(champs.dminus, trace.dMoins);
+    // Mettre à jour la trace active et rafraîchir les badges
+    gpxData = trace;
+    _majBadgesGPX();
 }
 
 function _dessinerProfil(profil) {

@@ -220,6 +220,9 @@ function switchMobileTab(tabId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Restaurer les traces GPX sauvegardées
+    if (typeof _chargerGPX === 'function') _chargerGPX();
+
     // Mobile tab select
     document.getElementById('mobile-tab-select').addEventListener('change', function() {
         switchMobileTab(this.value);
@@ -266,7 +269,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (act === 'copier-tableau')    { copierTableauTexte(action.dataset.container, action); return; }
         if (act === 'imprimer-section')  { imprimerSection(action.dataset.container, action.dataset.titre); return; }
         if (act === 'gpx-utiliser')      { gpxUtiliserDans(action.dataset.cible); return; }
-        if (act === 'gpx-badge')         { gpxAppliquerBadge(action.dataset.cible); return; }
+        if (act === 'gpx-badge')         { gpxAppliquerBadge(action.dataset.cible, parseInt(action.dataset.idx, 10)); return; }
+        if (act === 'gpx-select')        { gpxSelectTrace(parseInt(action.dataset.idx, 10)); return; }
+        if (act === 'gpx-rename')        { gpxRenommerTrace(parseInt(action.dataset.idx, 10)); return; }
+        if (act === 'gpx-suppr')         { gpxSupprimerTrace(parseInt(action.dataset.idx, 10)); return; }
     });
 
     // Boutons
@@ -278,12 +284,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-calculer-gap').addEventListener('click', calculerGAPDepuisPente);
     document.getElementById('btn-calculer-gap2').addEventListener('click', calculerGAPDepuisDenivele);
 
-    // GPX — input fichier
+    // GPX — input fichier (multiple)
     const gpxInput = document.getElementById('gpx-input');
     if (gpxInput) {
-        gpxInput.addEventListener('change', e => gpxHandleFile(e.target.files[0]));
+        gpxInput.addEventListener('change', e => {
+            Array.from(e.target.files).forEach(f => gpxHandleFile(f));
+            e.target.value = '';
+        });
     }
-    // GPX — drag & drop
+    // GPX — drag & drop (multiple)
     const dropzone = document.getElementById('gpx-dropzone');
     if (dropzone) {
         dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--primary)'; });
@@ -291,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropzone.addEventListener('drop', e => {
             e.preventDefault();
             dropzone.style.borderColor = '#dee2e6';
-            gpxHandleFile(e.dataTransfer.files[0]);
+            Array.from(e.dataTransfer.files).forEach(f => gpxHandleFile(f));
         });
     }
     document.getElementById('btn-generer-tableau').addEventListener('click', genererTableau);
