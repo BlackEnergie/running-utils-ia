@@ -265,6 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (act === 'calculer-vma')      { calculerVMA(); return; }
         if (act === 'copier-tableau')    { copierTableauTexte(action.dataset.container, action); return; }
         if (act === 'imprimer-section')  { imprimerSection(action.dataset.container, action.dataset.titre); return; }
+        if (act === 'gpx-utiliser')      { gpxUtiliserDans(action.dataset.cible); return; }
+        if (act === 'gpx-badge')         { gpxAppliquerBadge(action.dataset.cible); return; }
     });
 
     // Boutons
@@ -275,6 +277,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-calculer-ke').addEventListener('click', calculerKE);
     document.getElementById('btn-calculer-gap').addEventListener('click', calculerGAPDepuisPente);
     document.getElementById('btn-calculer-gap2').addEventListener('click', calculerGAPDepuisDenivele);
+
+    // GPX — input fichier
+    const gpxInput = document.getElementById('gpx-input');
+    if (gpxInput) {
+        gpxInput.addEventListener('change', e => gpxHandleFile(e.target.files[0]));
+    }
+    // GPX — drag & drop
+    const dropzone = document.getElementById('gpx-dropzone');
+    if (dropzone) {
+        dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = 'var(--primary)'; });
+        dropzone.addEventListener('dragleave', () => { dropzone.style.borderColor = '#dee2e6'; });
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.style.borderColor = '#dee2e6';
+            gpxHandleFile(e.dataTransfer.files[0]);
+        });
+    }
     document.getElementById('btn-generer-tableau').addEventListener('click', genererTableau);
     document.getElementById('btn-calculer-predictions').addEventListener('click', calculerPredictions);
     document.getElementById('btn-estimer-fcmax').addEventListener('click', estimerFCmax);

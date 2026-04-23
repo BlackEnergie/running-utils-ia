@@ -30,6 +30,7 @@
         <select id="mobile-tab-select">
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
+            <option value="tab-gpx">📁 Analyse GPX</option>
             <option value="tab-km-effort">⛰️ Kilomètres Effort</option>
             <option value="tab-gap">📊 GAP — Allure Ajustée</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
@@ -53,6 +54,9 @@
             </a>
             <a class="sidebar-link" href="#tab-temps-course">
                 <i class="bi bi-trophy"></i>Temps de course
+            </a>
+            <a class="sidebar-link" href="#tab-gpx">
+                <i class="bi bi-file-earmark-arrow-up"></i>Analyse GPX
             </a>
             <a class="sidebar-link" href="#tab-km-effort">
                 <i class="bi bi-triangle"></i>Kilomètres Effort
@@ -207,6 +211,7 @@
                                 <span class="badge-distance" data-target="tc-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="tc-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="tc-distance" data-value="42.195">Marathon</span>
+                                <span class="badge-gpx" id="gpx-badge-tc" data-action="gpx-badge" data-cible="tc" style="display:none"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -282,6 +287,7 @@
                                 <span class="badge-distance" data-target="obj-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="obj-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="obj-distance" data-value="42.195">Marathon</span>
+                                <span class="badge-gpx" id="gpx-badge-obj" data-action="gpx-badge" data-cible="obj" style="display:none"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -572,6 +578,7 @@
                                 <span class="badge-distance" data-target="pred-dist" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="pred-dist" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="pred-dist" data-value="42.195">Marathon</span>
+                                <span class="badge-gpx" id="gpx-badge-pred" data-action="gpx-badge" data-cible="pred" style="display:none"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1153,6 +1160,7 @@
                                 <span class="badge-distance" data-target="hydra-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="hydra-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="hydra-distance" data-value="42.195">Marathon</span>
+                                <span class="badge-gpx" id="gpx-badge-hydra" data-action="gpx-badge" data-cible="hydra" style="display:none"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1298,6 +1306,7 @@
                                 <span class="badge-distance" data-target="nutri-distance" data-value="10">10 km</span>
                                 <span class="badge-distance" data-target="nutri-distance" data-value="21.0975">Semi</span>
                                 <span class="badge-distance" data-target="nutri-distance" data-value="42.195">Marathon</span>
+                                <span class="badge-gpx" id="gpx-badge-nutri" data-action="gpx-badge" data-cible="nutri" style="display:none"></span>
                             </div>
                             <div class="input-group mb-3">
                                 <input
@@ -1481,6 +1490,7 @@
                                     <span class="badge-distance" data-target="plan-distance" data-value="15">15 km</span>
                                     <span class="badge-distance" data-target="plan-distance" data-value="21.0975">Semi</span>
                                     <span class="badge-distance" data-target="plan-distance" data-value="42.195">Marathon</span>
+                                    <span class="badge-gpx" id="gpx-badge-plan" data-action="gpx-badge" data-cible="plan" style="display:none"></span>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -1593,6 +1603,130 @@
                 </div>
             </div>
         </div>
+        <!-- ===== ONGLET ANALYSE GPX ===== -->
+        <div class="tab-pane fade" id="tab-gpx">
+            <!-- Zone de dépôt -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div id="gpx-dropzone" class="d-flex align-items-center gap-3 px-4 py-3 rounded" style="border:2px dashed #dee2e6;cursor:pointer;transition:border-color .2s">
+                        <i class="bi bi-file-earmark-arrow-up fs-4 text-muted flex-shrink-0"></i>
+                        <span class="text-muted small flex-grow-1">Glissez un fichier <strong>.gpx</strong> ici ou cliquez pour sélectionner</span>
+                        <input type="file" id="gpx-input" accept=".gpx" class="d-none"/>
+                        <button class="btn btn-convert btn-sm px-3 flex-shrink-0" onclick="document.getElementById('gpx-input').click()">
+                            <i class="bi bi-folder2-open me-1"></i>Parcourir…
+                        </button>
+                    </div>
+                    <div id="gpx-error" class="alert alert-danger mt-3 mb-0" style="display:none"></div>
+                    <div id="gpx-loading" class="text-center mt-3" style="display:none">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="text-muted small mt-2">Analyse en cours…</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résultats -->
+            <div id="gpx-result" style="display:none">
+                <div class="d-flex align-items-center mb-3 gap-2">
+                    <i class="bi bi-file-earmark-check text-success fs-5"></i>
+                    <span class="fw-semibold" id="gpx-nom"></span>
+                </div>
+
+                <!-- Statistiques en cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">Distance</div>
+                            <div class="fw-bold fs-4 text-primary" id="gpx-stat-dist">—</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">D+ / D−</div>
+                            <div class="fw-bold fs-5 text-danger"><span id="gpx-stat-dplus">—</span> / <span id="gpx-stat-dminus">—</span></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">Kilomètres Effort</div>
+                            <div class="fw-bold fs-4 text-warning" id="gpx-stat-ke">—</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">Pente moy.</div>
+                            <div class="fw-bold fs-4 text-secondary" id="gpx-stat-pente">—</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">Altitude min / max</div>
+                            <div class="fw-bold fs-6"><span id="gpx-stat-elemin">—</span> / <span id="gpx-stat-elemax">—</span></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center p-3 border-0 bg-light h-100">
+                            <div class="text-muted small">Points GPS</div>
+                            <div class="fw-bold fs-5 text-muted" id="gpx-stat-pts">—</div>
+                        </div>
+                    </div>
+                    <div id="gpx-row-duree" class="col-12 col-md-6">
+                        <div class="card border-0 bg-light p-3 h-100">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="text-muted small">Durée</div>
+                                    <div class="fw-bold" id="gpx-stat-duree">—</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-muted small">Allure</div>
+                                    <div class="fw-bold" id="gpx-stat-allure">—</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-muted small">GAP</div>
+                                    <div class="fw-bold text-success" id="gpx-stat-gap">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profil d'élévation -->
+                <div class="card mb-4" id="gpx-profil-container" style="display:none">
+                    <div class="card-header bg-light text-dark">
+                        <i class="bi bi-activity me-2"></i>Profil altimétrique
+                    </div>
+                    <div class="card-body p-2">
+                        <div id="gpx-profil-svg"></div>
+                    </div>
+                </div>
+
+                <!-- Boutons "Utiliser dans…" -->
+                <div class="card">
+                    <div class="card-header bg-light text-dark">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Utiliser ces données dans…
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary btn-sm" data-action="gpx-utiliser" data-cible="temps-course">
+                                <i class="bi bi-trophy me-1"></i>Temps de course
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" data-action="gpx-utiliser" data-cible="ke">
+                                <i class="bi bi-triangle me-1"></i>Km Effort
+                            </button>
+                            <button class="btn btn-outline-success btn-sm" data-action="gpx-utiliser" data-cible="gap">
+                                <i class="bi bi-graph-up me-1"></i>GAP
+                            </button>
+                            <button class="btn btn-outline-info btn-sm" data-action="gpx-utiliser" data-cible="hydratation">
+                                <i class="bi bi-droplet-half me-1"></i>Hydratation
+                            </button>
+                            <button class="btn btn-outline-warning btn-sm" data-action="gpx-utiliser" data-cible="plan">
+                                <i class="bi bi-journal-check me-1"></i>Plan de course
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ===== ONGLET GAP ===== -->
         <div class="tab-pane fade" id="tab-gap">
             <div class="row g-4">
@@ -1733,6 +1867,7 @@
                                         <span class="badge-distance" data-target="ke-distance" data-value="10">10 km</span>
                                         <span class="badge-distance" data-target="ke-distance" data-value="21.0975">Semi</span>
                                         <span class="badge-distance" data-target="ke-distance" data-value="42.195">Marathon</span>
+                                        <span class="badge-gpx" id="gpx-badge-ke" data-action="gpx-badge" data-cible="ke" style="display:none"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -1928,6 +2063,7 @@
 <script src="js/plan-course.js"></script>
 <script src="js/km-effort.js"></script>
 <script src="js/gap.js"></script>
+<script src="js/gpx.js"></script>
 <script src="js/profil.js"></script>
 <script src="js/pwa.js"></script>
 </body>

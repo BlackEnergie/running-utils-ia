@@ -144,6 +144,24 @@ body {
     color: white;
 }
 
+.badge-gpx {
+    background-color: #fff3e0;
+    color: #e65100;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #ffcc80;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.badge-gpx:hover {
+    background-color: #e65100;
+    color: white;
+}
+
 /* ===== FOOTER ===== */
 footer {
     background: var(--secondary);
