@@ -31,6 +31,7 @@
             <option value="tab-allure-vitesse">⇄ Allure ↔ Vitesse</option>
             <option value="tab-temps-course">🏆 Temps de course</option>
             <option value="tab-km-effort">⛰️ Kilomètres Effort</option>
+            <option value="tab-gap">📊 GAP — Allure Ajustée</option>
             <option value="tab-tableau-allures">📊 Tableau d'allures</option>
             <option value="tab-prediction">📈 Prédiction</option>
             <option value="tab-vma">💓 VMA &amp; VO2max</option>
@@ -55,6 +56,9 @@
             </a>
             <a class="sidebar-link" href="#tab-km-effort">
                 <i class="bi bi-triangle"></i>Kilomètres Effort
+            </a>
+            <a class="sidebar-link" href="#tab-gap">
+                <i class="bi bi-graph-up"></i>GAP — Allure Ajustée
             </a>
             <a class="sidebar-link" href="#tab-tableau-allures">
                 <i class="bi bi-table"></i>Tableau d'allures
@@ -1589,6 +1593,121 @@
                 </div>
             </div>
         </div>
+        <!-- ===== ONGLET GAP ===== -->
+        <div class="tab-pane fade" id="tab-gap">
+            <div class="row g-4">
+                <!-- Calculateur par pente -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header" style="background:linear-gradient(135deg,#2e7d32,#1b5e20);color:white">
+                            <i class="bi bi-graph-up me-2"></i>GAP par pente
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-3">
+                                Entrez votre allure terrain et la pente du segment pour obtenir l'allure équivalente sur plat (Grade Adjusted Pace).
+                            </p>
+                            <label class="form-label fw-semibold">Allure terrain (min/km)</label>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-allure-min" type="number" min="0" placeholder="min"/>
+                                        <span class="input-group-text">min</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-allure-sec" type="number" min="0" max="59" placeholder="sec"/>
+                                        <span class="input-group-text">sec</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="form-label fw-semibold">Pente du segment</label>
+                            <div class="input-group mb-1">
+                                <input class="form-control" id="gap-pente" type="number" min="-40" max="40" step="0.5" placeholder="Ex : +12 ou -8"/>
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <div class="text-muted small mb-3">Positif = montée · Négatif = descente</div>
+                            <button class="btn btn-convert w-100" id="btn-calculer-gap">
+                                <i class="bi bi-calculator me-2"></i>Calculer le GAP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Calculateur par dénivelé -->
+                <div class="col-lg-6">
+                    <div class="card h-100">
+                        <div class="card-header" style="background:linear-gradient(135deg,#4a148c,#311b92);color:white">
+                            <i class="bi bi-triangle me-2"></i>GAP par D+ et distance
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-3">
+                                Renseignez le D+ et la distance du segment pour calculer la pente moyenne et le GAP correspondant.
+                            </p>
+                            <label class="form-label fw-semibold">Allure terrain (min/km)</label>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-allure-min2" type="number" min="0" placeholder="min"/>
+                                        <span class="input-group-text">min</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-allure-sec2" type="number" min="0" max="59" placeholder="sec"/>
+                                        <span class="input-group-text">sec</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label fw-semibold">Distance</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-dist" type="number" min="0" step="0.1" placeholder="Ex : 3"/>
+                                        <span class="input-group-text">km</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-semibold">Dénivelé positif</label>
+                                    <div class="input-group">
+                                        <input class="form-control" id="gap-dplus2" type="number" min="0" placeholder="Ex : 350"/>
+                                        <span class="input-group-text">m D+</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-convert w-100" id="btn-calculer-gap2">
+                                <i class="bi bi-calculator me-2"></i>Calculer le GAP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résultat GAP -->
+            <div id="result-gap" class="mt-4" style="display:none">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="text-muted small mb-1">Allure terrain</div>
+                        <div class="fw-bold fs-5" id="result-gap-allure-terrain">—</div>
+                        <div class="text-muted mt-2 mb-1">→ Allure équivalente sur plat (GAP)</div>
+                        <div class="fw-bold display-6 text-success" id="result-gap-value">—</div>
+                        <div class="text-muted small mt-2" id="result-gap-detail">—</div>
+                    </div>
+                </div>
+
+                <!-- Tableau multi-pentes -->
+                <div class="card mt-3">
+                    <div class="card-header bg-light text-dark">
+                        <i class="bi bi-table me-2"></i>GAP pour différentes pentes — même allure terrain
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <div id="gap-tableau-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ===== ONGLET KM EFFORT ===== -->
         <div class="tab-pane fade" id="tab-km-effort">
             <div class="row g-4 justify-content-center">
@@ -1808,6 +1927,7 @@
 <script src="js/nutrition.js"></script>
 <script src="js/plan-course.js"></script>
 <script src="js/km-effort.js"></script>
+<script src="js/gap.js"></script>
 <script src="js/profil.js"></script>
 <script src="js/pwa.js"></script>
 </body>

@@ -273,6 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-calculer-temps').addEventListener('click', calculerTemps);
     document.getElementById('btn-calculer-allure').addEventListener('click', calculerAllure);
     document.getElementById('btn-calculer-ke').addEventListener('click', calculerKE);
+    document.getElementById('btn-calculer-gap').addEventListener('click', calculerGAPDepuisPente);
+    document.getElementById('btn-calculer-gap2').addEventListener('click', calculerGAPDepuisDenivele);
     document.getElementById('btn-generer-tableau').addEventListener('click', genererTableau);
     document.getElementById('btn-calculer-predictions').addEventListener('click', calculerPredictions);
     document.getElementById('btn-estimer-fcmax').addEventListener('click', estimerFCmax);
